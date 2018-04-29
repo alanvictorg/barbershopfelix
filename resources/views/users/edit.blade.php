@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
     {{ trans('message.home') }}
@@ -17,7 +17,7 @@
 @endsection
 @section('breadcrumb')
     <li>
-        <a href="{!! route('dashboard.index')!!}"><i class="fa fa-dashboard"></i>Inicial</a>
+        <a href="{!! route('home')!!}"><i class="fa fa-dashboard"></i>Inicial</a>
     </li>
     <li>
         <a href="{!! route('users.index')!!}"><i class="fa fa-feed"></i> Listagem de Usuários</a>

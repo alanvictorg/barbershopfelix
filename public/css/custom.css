@@ -170,3 +170,24 @@
         max-width: 800px;
     }
 }
+
+.main-sidebar {
+    background-color: black !important;
+}
+
+.skin-black .sidebar-menu > li:hover > a, .skin-black .sidebar-menu > li.active > a {
+    background: #1d1d1d;
+}
+
+.skin-black .sidebar-menu > li.header {
+    color: white;
+    background: #1d1d1d;
+}
+
+.td-img {
+    width: 10%;
+}
+
+.img-client {
+    width: 50px;
+}

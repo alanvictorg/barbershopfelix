@@ -22,20 +22,28 @@
                 @if (Auth::guest())
                     <li><a href="{{ url('/register') }}">{{ trans('adminlte_lang::message.register') }}</a></li>
                     <li><a href="{{ url('/login') }}">{{ trans('adminlte_lang::message.login') }}</a></li>
-                @else
-                    <!-- User Account Menu -->
+            @else
+                <!-- User Account Menu -->
                     <li class="dropdown user user-menu">
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <!-- The user image in the navbar-->
-                            <img src="{{ Gravatar::get($user->email) }}" class="user-image" alt="User Image"/>
-                            <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                            @if(Auth::user()->imagepath)
+                                <img src="{{asset(Auth::user()->imagepath)}}" class="user-image" alt="User Image">
+                            @else
+                                <img src="{{asset('img/avatar.png')}}" class="user-image" alt="User Image">
+                        @endif
+                        <!-- hidden-xs hides the username on small devices so only the image appears. -->
                             <span class="hidden-xs">{{ Auth::user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- The user image in the menu -->
                             <li class="user-header">
-                                <img src="{{ Gravatar::get($user->email) }}" class="img-circle" alt="User Image" />
+                                @if(Auth::user()->imagepath)
+                                    <img src="{{asset(Auth::user()->imagepath)}}" class="img-circle" alt="User Image">
+                                @else
+                                    <img src="{{asset('img/avatar.png')}}" class="img-circle" alt="User Image">
+                                @endif
                                 <p>
                                     {{ Auth::user()->name }}
                                     <small>{{ trans('adminlte_lang::message.login') }} </small>
@@ -45,7 +53,8 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="{{ url('/settings') }}" class="btn btn-default btn-flat">{{ trans('adminlte_lang::message.profile') }}</a>
+                                    <a href="{{ url('/settings') }}"
+                                       class="btn btn-default btn-flat">{{ trans('adminlte_lang::message.profile') }}</a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="{{ url('/logout') }}" class="btn btn-default btn-flat"
@@ -54,7 +63,8 @@
                                         {{ trans('adminlte_lang::message.signout') }}
                                     </a>
 
-                                    <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                    <form id="logout-form" action="{{ url('/logout') }}" method="POST"
+                                          style="display: none;">
                                         {{ csrf_field() }}
                                         <input type="submit" value="logout" style="display: none;">
                                     </form>
@@ -63,9 +73,9 @@
                             </li>
                         </ul>
                     </li>
-                @endif
+            @endif
 
-                <!-- Control Sidebar Toggle Button -->
+            <!-- Control Sidebar Toggle Button -->
             </ul>
         </div>
     </nav>

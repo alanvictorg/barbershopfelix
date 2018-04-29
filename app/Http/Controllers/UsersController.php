@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UsersController extends Controller
 {
@@ -37,12 +38,24 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+        $image = Storage::disk('public')->put("/images", $request->file('imagepath') );
         $data = $request->all();
         User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+            'password' => bcrypt('123456'),
+            'imagepath' => $image
         ]);
+        $response = [
+            'message' => 'Usuário cadastrado',
+        ];
+
+        if ($request->wantsJson()) {
+
+            return response()->json($response);
+        }
+
+        return redirect()->route('users.index')->with('message', $response['message']);
     }
 
     /**
@@ -64,7 +77,9 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::where('id',$id)->first();
+
+        return view('users.edit',compact('user'));
     }
 
     /**
@@ -76,7 +91,27 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data['name'] = $request->name;
+        $data['email'] = $request->email;
+        $data['updated_at'] = date('y-m-d');
+
+        if ($request->file('imagepath')){
+            $image = Storage::disk('public')->put("/images", $request->file('imagepath') );
+            $data['imagepath'] = $image;
+        }
+
+        User::where('id',$id)->update($data);
+
+        $response = [
+            'message' => 'Usuário Atualizado',
+        ];
+
+        if ($request->wantsJson()) {
+
+            return response()->json($response);
+        }
+
+        return redirect()->route('users.index')->with('message', $response['message']);
     }
 
     /**

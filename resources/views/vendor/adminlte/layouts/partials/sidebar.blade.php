@@ -8,7 +8,11 @@
         @if (! Auth::guest())
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="{{ Gravatar::get($user->email) }}" class="img-circle" alt="User Image" />
+                    @if(Auth::user()->imagepath)
+                        <img src="{{asset(Auth::user()->imagepath)}}" class="img-circle" alt="User Image">
+                    @else
+                        <img src="{{asset('img/avatar.png')}}" class="img-circle" alt="User Image">
+                    @endif
                 </div>
                 <div class="pull-left info">
                     <p>{{ Auth::user()->name }}</p>
@@ -22,8 +26,9 @@
         <ul class="sidebar-menu">
             <li class="header">MENU</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="{{ url('home') }}"><i class='fa fa-home'></i> <span>Início</span></a></li>
-            <li><a href="{{ route('users.index') }}"><i class='fa fa-link'></i> <span>Usuários</span></a></li>
+            <li {{ $rota_atual == 'home' ?  "class=active" : ""}}><a href="{{ url('home') }}"><i class='fa fa-home'></i> <span>Início</span></a></li>
+            <li {{ $rota_atual == 'users' ?  "class=active" : ""}}><a href="{{ route('users.index') }}"><i class='fa fa-user-secret'></i> <span>Usuários</span></a></li>
+            <li {{ $rota_atual == 'clients' ?  "class=active" : ""}}><a href="{{ route('clients.index') }}"><i class='fa fa-male'></i> <span>Clientes</span></a></li>
             <li class="treeview">
                 <a href="#"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.multilevel') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">

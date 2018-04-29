@@ -29,7 +29,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="skin-blue sidebar-mini">
+<body class="skin-black sidebar-mini">
 <div id="app">
     <div class="wrapper">
 
@@ -58,6 +58,6 @@ desired effect
 @section('scripts')
     @include('adminlte::layouts.partials.scripts')
 @show
-
+@include('errors._check')
 </body>
 </html>
