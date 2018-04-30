@@ -17,24 +17,33 @@
                 <div class="pull-left info">
                     <p>{{ Auth::user()->name }}</p>
                     <!-- Status -->
-                    <a href="#"><i class="fa fa-circle text-success"></i> {{ trans('adminlte_lang::message.online') }}</a>
+                    <a href="#"><i class="fa fa-circle text-success"></i> {{ trans('adminlte_lang::message.online') }}
+                    </a>
                 </div>
             </div>
-        @endif
+    @endif
 
-        <!-- Sidebar Menu -->
+    <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
             <li class="header">MENU</li>
             <!-- Optionally, you can add icons to the links -->
-            <li {{ $rota_atual == 'home' ?  "class=active" : ""}}><a href="{{ url('home') }}"><i class='fa fa-home'></i> <span>Início</span></a></li>
-            <li {{ $rota_atual == 'users' ?  "class=active" : ""}}><a href="{{ route('users.index') }}"><i class='fa fa-user-secret'></i> <span>Usuários</span></a></li>
-            <li {{ $rota_atual == 'clients' ?  "class=active" : ""}}><a href="{{ route('clients.index') }}"><i class='fa fa-male'></i> <span>Clientes</span></a></li>
+            <li {{ $rota_atual == 'home' ?  "class=active" : ""}}><a href="{{ url('home') }}"><i class='fa fa-home'></i>
+                    <span>Início</span></a></li>
+
             <li class="treeview">
-                <a href="#"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.multilevel') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <a href="#"><i class='fa fa-plus'></i> <span>Cadastros</span> <i
+                            class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="#">{{ trans('adminlte_lang::message.linklevel2') }}</a></li>
-                    <li><a href="#">{{ trans('adminlte_lang::message.linklevel2') }}</a></li>
+                    <li {{ $rota_atual == 'users' ?  "class=active" : ""}}><a href="{{ route('users.index') }}"><i
+                                    class='fa fa-user-secret'></i> <span>Usuários</span></a></li>
+                    <li {{ $rota_atual == 'clients' ?  "class=active" : ""}}><a href="{{ route('clients.index') }}"><i
+                                    class='fa fa-male'></i> <span>Clientes</span></a></li>
+                    <li {{ $rota_atual == 'products' ?  "class=active" : ""}}><a href="{{ route('products.index') }}"><i
+                                    class='fa fa-scissors'></i> <span>Produtos</span></a></li>
                 </ul>
+            <li {{ $rota_atual == 'schedules' ?  "class=active" : ""}}><a href="{{ route('schedules.index') }}"><i
+                            class='fa fa-calendar-check-o'></i> <span>Agendamentos</span></a></li>
+
             </li>
         </ul><!-- /.sidebar-menu -->
     </section>

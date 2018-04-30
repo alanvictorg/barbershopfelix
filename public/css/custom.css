@@ -172,7 +172,7 @@
 }
 
 .main-sidebar {
-    background-color: black !important;
+    background: linear-gradient(black 60%, ghostwhite) !important;
 }
 
 .skin-black .sidebar-menu > li:hover > a, .skin-black .sidebar-menu > li.active > a {
@@ -182,6 +182,16 @@
 .skin-black .sidebar-menu > li.header {
     color: white;
     background: #1d1d1d;
+}
+
+.skin-black .treeview-menu > li > a {
+    color: white;
+    background: #1d1d1d;
+}
+
+.btn-black {
+    color: white;
+    background-color: #222222 !important;
 }
 
 .td-img {

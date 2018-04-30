@@ -32,7 +32,7 @@
                         <div class="pull-right">
                             <!-- Button trigger modal -->
                             <a href="#" data-toggle="modal" data-target="#createmodal"
-                               class="btn btn-primary btn-sm rounded-s"><i class="fa fa-plus icon"></i> Adicionar
+                               class="btn btn-black btn-sm rounded-s"><i class="fa fa-plus icon"></i> Adicionar
                                 Cliente </a>
                             @include("clients._create")
                         </div>
@@ -51,7 +51,7 @@
                                 <tr>
                                     <td>{!! $client->id !!}</td>
                                     <td>{!! $client->name  !!}</td>
-                                    <td>{!! $client->email !!}</td>
+                                    <td>{!! $client->phone !!}</td>
                                     <td>
                                         <a href="{{ route('clients.edit',$client)}}"
                                            class="btn btn-sm btn-warning"> <i class="fa fa-edit"
