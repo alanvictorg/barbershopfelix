@@ -7,11 +7,11 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class Client.
+ * Class CashFlow.
  *
  * @package namespace App\Entities;
  */
-class Client extends Model implements Transformable
+class CashFlow extends Model implements Transformable
 {
     use TransformableTrait;
 
@@ -21,18 +21,9 @@ class Client extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
-        'name',
-        'phone',
-        'address',
-        'instagram',
-        'email',
-        'birthday',
-        'imagepath'
+        'value',
+        'type',
+        'description'
     ];
-
-    public function services()
-    {
-        return $this->hasMany(Service::class);
-    }
 
 }

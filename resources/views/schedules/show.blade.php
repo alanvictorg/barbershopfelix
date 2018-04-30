@@ -30,7 +30,7 @@
 @section('main-content')
     <section class="content">
         <div class="pull-left">
-            <h4><strong>Valor total a ser cobrado:</strong>  R${!! $valorTotal !!},00</h4>
+            <h4><strong>Valor total a ser cobrado:</strong> R${!! $valorTotal !!},00</h4>
         </div>
 
         <div class="pull-right">
@@ -48,16 +48,22 @@
                             <tr>
                                 <th>Serviço</th>
                                 <th>Valor</th>
+                                <th>Desconto</th>
                                 <th>Opções</th>
                             </tr>
                             @forelse($serviceItems as $item)
                                 <tr>
                                     <td>{!! $item->product->name !!}</td>
                                     <td>R${!! $item->product->price->price !!},00</td>
+                                    @if($item->discount)
+                                        <td>R${!! $item->discount !!},00</td>
+                                    @else
+                                        <td>-</td>
+                                    @endif
                                     <td>
                                         {!! Form::open(['url' => route('scheduleitems.destroy', $item),'method' => 'delete']) !!}
                                         <button type="submit"
-                                                class="btn btn-danger btn-circle" ><i
+                                                class="btn btn-danger btn-circle"><i
                                                     class="fa fa-close"></i>
                                         </button>
                                         {!! Form::close() !!}

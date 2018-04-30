@@ -9,7 +9,7 @@
 <div class="col-md-6">
     <div class="form-group{{ $errors->has("description") ? ' has-error' : '' }}">
         {!! Form::label("description", 'Descrição', ['class' => '']) !!}
-        {!! Form::text("description", null, ["class" => "form-control", 'id'=>'description','required','placeholder'=>"Digite uma descrição",'required'])  !!}
+        {!! Form::text("description", null, ["class" => "form-control", 'id'=>'description','placeholder'=>"Digite uma descrição"])  !!}
         <small class="text-danger">{{ $errors->first("description") }}</small>
     </div>
 </div>

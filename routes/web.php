@@ -21,7 +21,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('products', 'ProductsController');
     Route::resource('schedules', 'ServicesController');
     Route::resource('scheduleitems', 'ServiceItemsController');
-
+    Route::get('schedule/{schedule}/done', 'ServicesController@done')->name('schedules.done');
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes

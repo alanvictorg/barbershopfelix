@@ -19,6 +19,7 @@ class CreateClientsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('phone');
+            $table->string('instagram')->nullable();
             $table->string('address')->nullable();
             $table->string('email')->nullable();
             $table->date('birthday')->nullable();

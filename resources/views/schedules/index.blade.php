@@ -32,7 +32,8 @@
                         <div class="pull-right">
                             <!-- Button trigger modal -->
                             <a href="#" data-toggle="modal" data-target="#createmodal"
-                               class="btn btn-black btn-sm rounded-s"><i class="fa fa-plus icon"></i> Agendar novo serviço </a>
+                               class="btn btn-black btn-sm rounded-s"><i class="fa fa-plus icon"></i> Agendar novo
+                                serviço </a>
                             @include("schedules._create")
                         </div>
                     </div>
@@ -54,10 +55,17 @@
                                     <td>
                                         <a href="{{ route('schedules.edit',$service)}}"
                                            class="btn btn-sm btn-warning"> <i class="fa fa-edit"
-                                                                                            aria-hidden="true"></i></a>
+                                                                              aria-hidden="true"></i></a>
                                         <a href="{{ route('schedules.show',$service)}}"
                                            class="btn btn-sm btn-info"> <i class="fa fa-eye"
-                                                                                            aria-hidden="true"></i></a>
+                                                                           aria-hidden="true"></i></a>
+                                        @if($service->status == "waiting")
+                                            <a href="{{ route('schedules.done',$service)}}"
+                                               class="btn btn-sm btn-success pull-right"> <i class="fa fa-check"
+                                                                               aria-hidden="true"></i></a>
+                                            <strong class="pull-right" style="margin: 5px 15px 0 0">Marcar como concluído</strong>
+                                        @endif
+
                                     </td>
                                 </tr>
                             @empty

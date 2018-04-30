@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Entities\Client;
 use App\Entities\Product;
+use App\Repositories\CashFlowRepository;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -27,6 +28,11 @@ class ServicesController extends Controller
     protected $repository;
 
     /**
+     * @var CashFlowRepository
+     */
+    protected $cashFlowRepository;
+
+    /**
      * @var ServiceValidator
      */
     protected $validator;
@@ -37,10 +43,19 @@ class ServicesController extends Controller
      * @param ServiceRepository $repository
      * @param ServiceValidator $validator
      */
-    public function __construct(ServiceRepository $repository, ServiceValidator $validator)
+    public function __construct(ServiceRepository $repository, ServiceValidator $validator, CashFlowRepository $cashFlowRepository)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->cashFlowRepository = $cashFlowRepository;
+    }
+
+    /**
+     * @return CashFlowRepository
+     */
+    public function getCashFlowRepository()
+    {
+        return $this->cashFlowRepository;
     }
 
     /**
@@ -48,10 +63,12 @@ class ServicesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $services = $this->repository->all();
+        $services = $this->repository->findWhere(['status'=>'waiting']);
 
         $clients = Client::all()->pluck('name','id');
 
@@ -117,11 +134,15 @@ class ServicesController extends Controller
     {
         $service = $this->repository->find($id);
         $products = Product::all()->pluck('name','id');
-        $serviceItems = $service->itens;
+        $serviceItems = $service->items;
         $valorTotal = 0;
-        foreach ($serviceItems as $service)
+        foreach ($serviceItems as $servicei)
         {
-            $valorTotal += $service->product->price->price;
+            $valorTotal += $servicei->product->price->price;
+            if($servicei->discount)
+            {
+                $valorTotal -= $servicei->discount;
+            }
         }
         if (request()->wantsJson()) {
 
@@ -211,5 +232,28 @@ class ServicesController extends Controller
         }
 
         return redirect()->back()->with('message', 'Service deleted.');
+    }
+
+    public function done($id)
+    {
+        $service = $this->repository->find($id);
+        $data['status'] = "done";
+        $valorService = 0;
+        foreach($service->items as $item){
+            $valorService += $item->product->price->price;
+            if($item->discount)
+            {
+                $valorService -= $item->discount;
+            }
+        }
+        $dataFlow['value'] = $valorService;
+        $dataFlow['type'] = 'input_stream';
+        $dataFlow['description'] = 'Serviço concluído';
+
+        $inputStream = $this->getCashFlowRepository()->create($dataFlow);
+
+        $serviceUpdate = $this->repository->update($data, $id);
+
+        return redirect()->back()->with('message', 'Serviço finalizado e entrada de caixa criada');
     }
 }

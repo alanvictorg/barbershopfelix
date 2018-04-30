@@ -76,7 +76,9 @@ class ServiceItemsController extends Controller
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-            $serviceItem = $this->repository->create($request->all());
+            $data = $request->all();
+
+            $serviceItem = $this->repository->create($data);
 
             $response = [
                 'message' => 'Serviço adicionado',

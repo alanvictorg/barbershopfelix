@@ -14,9 +14,16 @@
     </div>
 </div>
 <div class="col-md-6">
+    <div class="form-group{{ $errors->has("instagram") ? ' has-error' : '' }}">
+        {!! Form::label("instagram", 'Instagram', ['class' => '']) !!}
+        {!! Form::text("instagram", null, ["class" => "form-control", 'id'=>'instagram','placeholder'=>"Digite o instagram"])  !!}
+        <small class="text-danger">{{ $errors->first("instagram") }}</small>
+    </div>
+</div>
+<div class="col-md-12">
     <div class="form-group{{ $errors->has("address") ? ' has-error' : '' }}">
         {!! Form::label("address", 'Endereço', ['class' => '']) !!}
-        {!! Form::text("address", null, ["class" => "form-control", 'id'=>'address','required','placeholder'=>"Digite o endereço",'required'])  !!}
+        {!! Form::text("address", null, ["class" => "form-control", 'id'=>'address','placeholder'=>"Digite o endereço"])  !!}
         <small class="text-danger">{{ $errors->first("address") }}</small>
     </div>
 </div>

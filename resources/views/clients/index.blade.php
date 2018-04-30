@@ -72,6 +72,9 @@
                     </div>
                     <!-- /.box-body -->
                 </div>
+                <nav class="text-xs-right">
+                    {!!  $clients->appends(['sort'=>'id'])->links() !!}
+                </nav>
                 <!-- /.box -->
             </div>
             <!-- /.col -->

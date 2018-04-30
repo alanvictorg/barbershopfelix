@@ -71,6 +71,9 @@
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
+                <nav class="text-xs-right">
+                    {!!  $products->appends(['sort'=>'id'])->links() !!}
+                </nav>
             </div>
             <!-- /.col -->
         </div>

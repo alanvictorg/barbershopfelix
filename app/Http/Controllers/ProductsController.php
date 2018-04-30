@@ -50,7 +50,7 @@ class ProductsController extends Controller
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $products = $this->repository->all();
+        $products = $this->repository->paginate('8');
 
         $prices = Price::all()->pluck('price','id');
         if (request()->wantsJson()) {

@@ -5,6 +5,7 @@ namespace App\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Service.
@@ -14,6 +15,7 @@ use Prettus\Repository\Traits\TransformableTrait;
 class Service extends Model implements Transformable
 {
     use TransformableTrait;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -27,13 +29,15 @@ class Service extends Model implements Transformable
         'scheduled_hour'
     ];
 
-    public function itens()
+    protected $dates = ['deleted_at'];
+
+    public function items()
     {
         return $this->hasMany(ServiceItem::class);
     }
 
     public function client()
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(Client::class,'client_id');
     }
 }

@@ -24,7 +24,7 @@ class CreateProductsTable extends Migration
                 ->on('prices');
 
             $table->string('name');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->timestamps();
 		});
 	}

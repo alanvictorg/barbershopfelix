@@ -5,51 +5,41 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use Illuminate\Support\Facades\Storage;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
-use App\Http\Requests\ClientCreateRequest;
-use App\Http\Requests\ClientUpdateRequest;
-use App\Repositories\ClientRepository;
-use App\Validators\ClientValidator;
+use App\Http\Requests\CashFlowCreateRequest;
+use App\Http\Requests\CashFlowUpdateRequest;
+use App\Repositories\CashFlowRepository;
+use App\Validators\CashFlowValidator;
 
 /**
- * Class ClientsController.
+ * Class CashFlowsController.
  *
  * @package namespace App\Http\Controllers;
  */
-class ClientsController extends Controller
+class CashFlowsController extends Controller
 {
     /**
-     * @var ClientRepository
+     * @var CashFlowRepository
      */
     protected $repository;
 
     /**
-     * @var ClientValidator
+     * @var CashFlowValidator
      */
     protected $validator;
 
     /**
-     * ClientsController constructor.
+     * CashFlowsController constructor.
      *
-     * @param ClientRepository $repository
-     * @param ClientValidator $validator
+     * @param CashFlowRepository $repository
+     * @param CashFlowValidator $validator
      */
-    public function __construct(ClientRepository $repository, ClientValidator $validator)
+    public function __construct(CashFlowRepository $repository, CashFlowValidator $validator)
     {
         $this->repository = $repository;
-        $this->validator = $validator;
+        $this->validator  = $validator;
     }
-
-    /**
-     * @return ClientRepository
-     */
-    public function getRepository()
-    {
-        return $this->repository;
-    }
-
 
     /**
      * Display a listing of the resource.
@@ -59,44 +49,38 @@ class ClientsController extends Controller
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $clients = $this->getRepository()->paginate(8);
+        $cashFlows = $this->repository->all();
+
         if (request()->wantsJson()) {
 
             return response()->json([
-                'data' => $clients,
+                'data' => $cashFlows,
             ]);
         }
 
-        return view('clients.index', compact('clients'));
+        return view('cashFlows.index', compact('cashFlows'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  ClientCreateRequest $request
+     * @param  CashFlowCreateRequest $request
      *
      * @return \Illuminate\Http\Response
      *
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function store(ClientCreateRequest $request)
+    public function store(CashFlowCreateRequest $request)
     {
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
-            $data = $request->all();
 
-            if ($request->file('imagepath')) {
-                $image = Storage::disk('public')->put("/images", $request->file('imagepath'));
-                $data['imagepath'] = $image;
-            }
-
-
-            $client = $this->repository->create($data);
+            $cashFlow = $this->repository->create($request->all());
 
             $response = [
-                'message' => 'Cliente adicionado ao sistema.',
-                'data' => $client->toArray(),
+                'message' => 'CashFlow created.',
+                'data'    => $cashFlow->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -108,7 +92,7 @@ class ClientsController extends Controller
         } catch (ValidatorException $e) {
             if ($request->wantsJson()) {
                 return response()->json([
-                    'error' => true,
+                    'error'   => true,
                     'message' => $e->getMessageBag()
                 ]);
             }
@@ -126,24 +110,16 @@ class ClientsController extends Controller
      */
     public function show($id)
     {
-        $client = $this->repository->find($id);
+        $cashFlow = $this->repository->find($id);
 
-        $amountGone = $client->services->where('status', 'done')->count();
-
-        $quantityServices = 0;
-        foreach ($client->services()->where('status', 'done')->get() as $service) {
-            foreach ($service->items as $item) {
-                $quantityServices++;
-            }
-        }
         if (request()->wantsJson()) {
 
             return response()->json([
-                'data' => $client,
+                'data' => $cashFlow,
             ]);
         }
 
-        return view('clients.show', compact('client', 'quantityServices', 'amountGone'));
+        return view('cashFlows.show', compact('cashFlow'));
     }
 
     /**
@@ -155,39 +131,32 @@ class ClientsController extends Controller
      */
     public function edit($id)
     {
-        $client = $this->repository->find($id);
+        $cashFlow = $this->repository->find($id);
 
-        return view('clients.edit', compact('client'));
+        return view('cashFlows.edit', compact('cashFlow'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  ClientUpdateRequest $request
-     * @param  string $id
+     * @param  CashFlowUpdateRequest $request
+     * @param  string            $id
      *
      * @return Response
      *
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function update(ClientUpdateRequest $request, $id)
+    public function update(CashFlowUpdateRequest $request, $id)
     {
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $data = $request->all();
-
-            if ($request->file('imagepath')) {
-                $image = Storage::disk('public')->put("/images", $request->file('imagepath'));
-                $data['imagepath'] = $image;
-            }
-
-            $client = $this->repository->update($data, $id);
+            $cashFlow = $this->repository->update($request->all(), $id);
 
             $response = [
-                'message' => 'Informações do cliente atualizadas.',
-                'data' => $client->toArray(),
+                'message' => 'CashFlow updated.',
+                'data'    => $cashFlow->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -201,7 +170,7 @@ class ClientsController extends Controller
             if ($request->wantsJson()) {
 
                 return response()->json([
-                    'error' => true,
+                    'error'   => true,
                     'message' => $e->getMessageBag()
                 ]);
             }
@@ -225,11 +194,11 @@ class ClientsController extends Controller
         if (request()->wantsJson()) {
 
             return response()->json([
-                'message' => 'Client deleted.',
+                'message' => 'CashFlow deleted.',
                 'deleted' => $deleted,
             ]);
         }
 
-        return redirect()->back()->with('message', 'Client deleted.');
+        return redirect()->back()->with('message', 'CashFlow deleted.');
     }
 }

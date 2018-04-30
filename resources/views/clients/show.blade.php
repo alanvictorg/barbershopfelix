@@ -37,16 +37,25 @@
                             <div class="col-md-12" style="text-align: center">
                                 <h1 style="text-align: center">{!! $client->name !!}</h1>
                                 @if($client->imagepath)
-                                    <img src="{{asset($client->imagepath)}}" style="width: 200px" class="img-circle" alt="User Image">
+                                    <img src="{{asset($client->imagepath)}}" style="width: 200px" class="img-circle"
+                                         alt="User Image">
                                 @else
-                                    <img src="{{asset('img/avatar.png')}}" style="width: 200px" class="img-circle" alt="User Image">
+                                    <img src="{{asset('img/avatar.png')}}" style="width: 200px" class="img-circle"
+                                         alt="User Image">
                                 @endif
                             </div>
                             <div class="col-md-6">
                                 <h4><strong>Telefone:</strong> {!! $client->phone !!}</h4>
                                 <h4><strong>Email:</strong> {!! $client->email !!}</h4>
                                 <h4><strong>Nascimento:</strong> {!! $client->birthday !!}</h4>
-                                <h4><strong>Cliente desde:</strong> {!! \Carbon\Carbon::parse($client->created_at)->format('d-m-Y')  !!}</h4>
+                                <h4><strong>Cliente
+                                        desde:</strong> {!! \Carbon\Carbon::parse($client->created_at)->format('d-m-Y')  !!}
+                                </h4>
+                            </div>
+                            <div class="col-md-6">
+                                <h4><strong>Quantidade de <br>idas ao barbeiro:</strong> {!! $amountGone !!}</h4>
+                                <h4><strong>Quantidade de <br>serviços realizados</b>
+                                        :</strong> {!! $quantityServices !!}</h4>
                             </div>
                         </div>
                     </div>
