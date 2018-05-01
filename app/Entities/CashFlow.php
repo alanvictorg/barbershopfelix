@@ -23,7 +23,8 @@ class CashFlow extends Model implements Transformable
     protected $fillable = [
         'value',
         'type',
-        'description'
+        'description',
+        'day'
     ];
 
 }

@@ -49,8 +49,9 @@ class CashFlowsController extends Controller
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $cashFlows = $this->repository->all();
+        $cashFlows = $this->repository->paginate(8);
 
+        $types = ['input_stream' => 'Entrada', 'output_stream' => 'Saída'];
         if (request()->wantsJson()) {
 
             return response()->json([
@@ -58,7 +59,7 @@ class CashFlowsController extends Controller
             ]);
         }
 
-        return view('cashFlows.index', compact('cashFlows'));
+        return view('cashFlows.index', compact('cashFlows','types'));
     }
 
     /**
@@ -79,7 +80,7 @@ class CashFlowsController extends Controller
             $cashFlow = $this->repository->create($request->all());
 
             $response = [
-                'message' => 'CashFlow created.',
+                'message' => 'Item adicionado ao fluxo de caixa',
                 'data'    => $cashFlow->toArray(),
             ];
 

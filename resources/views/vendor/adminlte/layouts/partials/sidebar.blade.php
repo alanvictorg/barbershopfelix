@@ -43,6 +43,8 @@
                 </ul>
             <li {{ $rota_atual == 'schedules' ?  "class=active" : ""}}><a href="{{ route('schedules.index') }}"><i
                             class='fa fa-calendar-check-o'></i> <span>Agendamentos</span></a></li>
+            <li {{ $rota_atual == 'cashflows' ?  "class=active" : ""}}><a href="{{ route('cashflows.index') }}"><i
+                            class='fa fa-dollar'></i> <span>Fluxo de Caixa</span></a></li>
 
             </li>
         </ul><!-- /.sidebar-menu -->

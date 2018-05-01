@@ -20,6 +20,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('clients', 'ClientsController');
     Route::resource('products', 'ProductsController');
     Route::resource('schedules', 'ServicesController');
+    Route::resource('cashflows', 'CashFlowsController');
     Route::resource('scheduleitems', 'ServiceItemsController');
     Route::get('schedule/{schedule}/done', 'ServicesController@done')->name('schedules.done');
 

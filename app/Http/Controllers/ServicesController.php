@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Entities\Client;
 use App\Entities\Product;
 use App\Repositories\CashFlowRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -249,6 +250,7 @@ class ServicesController extends Controller
         $dataFlow['value'] = $valorService;
         $dataFlow['type'] = 'input_stream';
         $dataFlow['description'] = 'Serviço concluído';
+        $dataFlow['day'] = Carbon::now()->toDateString();
 
         $inputStream = $this->getCashFlowRepository()->create($dataFlow);
 

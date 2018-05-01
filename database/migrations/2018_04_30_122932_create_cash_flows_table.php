@@ -21,6 +21,7 @@ class CreateCashFlowsTable extends Migration
             $table->float('value');
             $table->enum('type',['input_stream','output_stream']);
             $table->string('description');
+            $table->date('day');
 
             $table->timestamps();
             $table->softDeletes();
