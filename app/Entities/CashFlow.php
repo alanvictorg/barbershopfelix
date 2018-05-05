@@ -21,10 +21,16 @@ class CashFlow extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
+        'service_id',
+        'payment_id',
         'value',
         'type',
         'description',
         'day'
     ];
 
+    public function paymentForm()
+    {
+
+    }
 }

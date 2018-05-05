@@ -7,6 +7,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\CashFlow;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
@@ -33,6 +34,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('adminlte::home');
+        $paymentCash = CashFlow::where(['payment_id' => 1])->get();
+        $paymentCredit = CashFlow::where(['payment_id' => 2])->get();
+        return view('adminlte::home',compact('paymentCash','paymentCredit'));
     }
 }

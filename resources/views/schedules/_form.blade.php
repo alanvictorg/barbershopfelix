@@ -20,6 +20,13 @@
         <small class="text-danger">{{ $errors->first("scheduled_hour") }}</small>
     </div>
 </div>
+<div class="col-md-12">
+    <div class="form-group{{ $errors->has("observation") ? ' has-error' : '' }}">
+        {!! Form::label("observation", 'Observação', ['class' => '']) !!}
+        {!! Form::text("observation", null, ["class" => "form-control", 'id'=>'observation','placeholder'=>"Digite o horário"])  !!}
+        <small class="text-danger">{{ $errors->first("observation") }}</small>
+    </div>
+</div>
 
 
 

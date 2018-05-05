@@ -26,7 +26,8 @@ class Service extends Model implements Transformable
         'client_id',
         'status',
         'scheduled_day',
-        'scheduled_hour'
+        'scheduled_hour',
+        'observation'
     ];
 
     protected $dates = ['deleted_at'];

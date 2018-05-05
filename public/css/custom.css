@@ -201,3 +201,31 @@
 .img-client {
     width: 50px;
 }
+
+.login-page {
+    background: url("../img/back-barber.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    max-height: 498px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+}
+
+.login-box-body {
+    background-color: rgba(10,23,55,0.5);
+}
+
+.forms-pay {
+    font-size: 30px;
+}
+.credit-pay {
+    font-size: 27px;
+}
+.widget-user .widget-user-header {
+    background: linear-gradient(black 60%, ghostwhite) !important;
+}

@@ -34,28 +34,68 @@
                 <div class="box">
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-12" style="text-align: center">
-                                <h1 style="text-align: center">{!! $client->name !!}</h1>
-                                @if($client->imagepath)
-                                    <img src="{{asset($client->imagepath)}}" style="width: 200px" class="img-circle"
-                                         alt="User Image">
-                                @else
-                                    <img src="{{asset('img/avatar.png')}}" style="width: 200px" class="img-circle"
-                                         alt="User Image">
-                                @endif
-                            </div>
-                            <div class="col-md-6">
-                                <h4><strong>Telefone:</strong> {!! $client->phone !!}</h4>
-                                <h4><strong>Email:</strong> {!! $client->email !!}</h4>
-                                <h4><strong>Nascimento:</strong> {!! $client->birthday !!}</h4>
-                                <h4><strong>Cliente
-                                        desde:</strong> {!! \Carbon\Carbon::parse($client->created_at)->format('d-m-Y')  !!}
-                                </h4>
-                            </div>
-                            <div class="col-md-6">
-                                <h4><strong>Quantidade de <br>idas ao barbeiro:</strong> {!! $amountGone !!}</h4>
-                                <h4><strong>Quantidade de <br>serviços realizados</b>
-                                        :</strong> {!! $quantityServices !!}</h4>
+                            <div class="col-md-12">
+                                <div class="box box-widget widget-user">
+                                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                                    <div class="widget-user-header bg-aqua-active">
+                                        <h3 class="widget-user-username">{!! $client->name !!}</h3>
+                                        <h5 class="widget-user-desc"></h5>
+                                    </div>
+                                    <div class="widget-user-image">
+                                        <img class="img-circle" src="{{asset($client->imagepath)}}" alt="User Avatar">
+                                    </div>
+                                    <div class="box-footer">
+                                        <div class="row">
+                                            <div class="col-sm-4 border-right">
+                                                <div class="description-block">
+                                                    <h5 class="description-header">{!! $client->phone !!}</h5>
+                                                    <span class="description-text">TELEFONE</span>
+                                                </div>
+                                                <!-- /.description-block -->
+                                            </div>
+                                            <!-- /.col -->
+                                            <div class="col-sm-4 border-right">
+                                                <div class="description-block">
+                                                    <h5 class="description-header">{!! $client->email !!}</h5>
+                                                    <span class="description-text">EMAIL</span>
+                                                </div>
+                                                <!-- /.description-block -->
+                                            </div>
+                                            <!-- /.col -->
+                                            <div class="col-sm-4">
+                                                <div class="description-block">
+                                                    <h5 class="description-header">{!! $client->birthday !!}</h5>
+                                                    <span class="description-text">NASCIMENTO</span>
+                                                </div>
+                                                <!-- /.description-block -->
+                                            </div>
+                                            <div class="col-sm-4 border-right">
+                                                <div class="description-block">
+                                                    <h5 class="description-header">{!! \Carbon\Carbon::parse($client->created_at)->format('d-m-Y')  !!}</h5>
+                                                    <span class="description-text">CLIENTE DESDE</span>
+                                                </div>
+                                                <!-- /.description-block -->
+                                            </div>
+                                            <!-- /.col -->
+                                            <div class="col-sm-4">
+                                                <div class="description-block">
+                                                    <h5 class="description-header">{!! $amountGone !!}</h5>
+                                                    <span class="description-text">IDAS AO BARBEIRO</span>
+                                                </div>
+                                                <!-- /.description-block -->
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="description-block">
+                                                    <h5 class="description-header">{!! $quantityServices !!}</h5>
+                                                    <span class="description-text">QUANTIDADE DE SERVIÇOS</span>
+                                                </div>
+                                                <!-- /.description-block -->
+                                            </div>
+                                            <!-- /.col -->
+                                        </div>
+                                        <!-- /.row -->
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

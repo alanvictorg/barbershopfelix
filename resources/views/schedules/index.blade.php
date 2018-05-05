@@ -9,7 +9,7 @@
     {{--{!! Html::style('plugins/datatables/jquery.dataTables.min.css') !!}--}}
 @endsection
 @section('contentheader_title')
-    Listagem de Clientes
+    Agendamento de clientes
 @endsection
 
 
@@ -28,7 +28,7 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">Clientes</h3>
+                        <h3 class="box-title">Agenda</h3>
                         <div class="pull-right">
                             <!-- Button trigger modal -->
                             <a href="#" data-toggle="modal" data-target="#createmodal"
@@ -43,15 +43,17 @@
                             <thead>
                             <tr>
                                 <th>Cliente</th>
-                                <th>Data</th>
+                                <th>Dia</th>
                                 <th>Horário</th>
+                                <th>Observação</th>
                                 <th>Opções</th>
                             </tr>
                             @forelse($services as $service)
                                 <tr>
                                     <td>{!! $service->client->name !!}</td>
-                                    <td>{!! \Carbon\Carbon::parse($service->scheduled_day)->format('d-m-Y')  !!}</td>
+                                    <td>{!! \Carbon\Carbon::parse($service->scheduled_day)->format('d/m/Y')  !!}</td>
                                     <td>{!! $service->scheduled_hour !!}</td>
+                                    <td>{!! $service->observation !!}</td>
                                     <td>
                                         <a href="{{ route('schedules.edit',$service)}}"
                                            class="btn btn-sm btn-warning"> <i class="fa fa-edit"
@@ -60,10 +62,13 @@
                                            class="btn btn-sm btn-info"> <i class="fa fa-eye"
                                                                            aria-hidden="true"></i></a>
                                         @if($service->status == "waiting")
-                                            <a href="{{ route('schedules.done',$service)}}"
+                                            <!-- <a href="{{ route('schedules.done',$service)}}"
                                                class="btn btn-sm btn-success pull-right"> <i class="fa fa-check"
                                                                                aria-hidden="true"></i></a>
-                                            <strong class="pull-right" style="margin: 5px 15px 0 0">Marcar como concluído</strong>
+                                            <strong class="pull-right" style="margin: 5px 15px 0 0">Marcar como concluído</strong> !-->
+                                            <a href="#" data-toggle="modal" data-target="#createmodaldone"
+                                               class="btn btn-black btn-sm rounded-s pull-right"><i class="fa fa-check"></i></a>
+                                            @include("schedules._done")
                                         @endif
 
                                     </td>
@@ -94,22 +99,21 @@
           rel="stylesheet"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
     <script>
-        $.fn.select2.defaults.set("theme", "bootstrap");
-        $.fn.select2.defaults.set('language', 'pt-BR');
         $(document).ready(function () {
-            $('#service_id').select2({
-                placeholder: 'Seleciona um serviço',
-                width: '100%'
+            var input = document.querySelector('input');;
+            input.addEventListener('input', function (){
+                console.log(this.value);
             });
-            $('#client_id').select2({
-                placeholder: 'Seleciona um serviço',
-                width: '100%'
-            });
-            $('#form_of_payment_id').select2({
-                placeholder: 'Seleciona uma Forma de Pagamento',
-                width: '100%'
-            });
-            console.log('oi');
+            formatReal($('#value_cash').val());
+            function formatReal( int )
+            {
+                var tmp = int+'';
+                tmp = tmp.replace(/([0-9]{2})$/g, ",$1");
+                if( tmp.length > 6 )
+                    tmp = tmp.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
+
+                $('#value_cash').val(tmp);
+            }
         })
     </script>
 @endsection

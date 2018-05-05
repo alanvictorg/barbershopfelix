@@ -3,14 +3,48 @@
 @section('htmlheader_title')
 
 @endsection
-
+@section('contentheader_title')
+@endsection
 
 @section('main-content')
-	<div class="container-fluid spark-screen">
-		<div class="row">
-			<div class="col-md-8 col-md-offset-2">
+    <div class="container-fluid spark-screen">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-lg-4 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-light-blue-gradient">
+                        <div class="inner">
+                            <h3>{!! $paymentCash->count() !!}</h3>
 
-			</div>
-		</div>
-	</div>
+                            <p>Pagamentos em dinheiro</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-money"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">Mais informações <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-lime-active">
+                        <div class="inner">
+                            <h3>{!! $paymentCredit->count() !!}</h3>
+
+                            <p>Pagamentos com cartão</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-credit-card"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">Mais informações <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-xs-6">
+                    <!-- small box -->
+                    <div id="calendar-y23JlCgJ"></div>
+{!! $calendar->calendar() !!}
+{!! $calendar->script() !!}
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

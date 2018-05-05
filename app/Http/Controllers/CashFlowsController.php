@@ -202,4 +202,9 @@ class CashFlowsController extends Controller
 
         return redirect()->back()->with('message', 'CashFlow deleted.');
     }
+
+    public function filterByDate($date)
+    {
+        dd("saddcscs");
+    }
 }

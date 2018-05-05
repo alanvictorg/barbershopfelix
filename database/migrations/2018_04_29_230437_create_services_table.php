@@ -24,6 +24,7 @@ class CreateServicesTable extends Migration
             $table->string('status');
             $table->date('scheduled_day');
             $table->string('scheduled_hour');
+            $table->string('observation')->nullable();
             $table->timestamps();
             $table->softDeletes();
 		});

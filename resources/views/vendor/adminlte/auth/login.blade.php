@@ -8,11 +8,6 @@
     <body class="hold-transition login-page">
     <div id="app">
         <div class="login-box">
-            <div class="login-logo">
-                <b>BarberShop</b>Félix
-                <img src="img/barbershop.png">
-            </div><!-- /.login-logo -->
-
             @if (count($errors) > 0)
                 <div class="alert alert-danger">
                     <ul>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Client;
+use App\Entities\Payment;
 use App\Entities\Product;
 use App\Repositories\CashFlowRepository;
 use Carbon\Carbon;
@@ -47,7 +48,7 @@ class ServicesController extends Controller
     public function __construct(ServiceRepository $repository, ServiceValidator $validator, CashFlowRepository $cashFlowRepository)
     {
         $this->repository = $repository;
-        $this->validator  = $validator;
+        $this->validator = $validator;
         $this->cashFlowRepository = $cashFlowRepository;
     }
 
@@ -69,10 +70,10 @@ class ServicesController extends Controller
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $services = $this->repository->findWhere(['status'=>'waiting']);
+        $services = $this->repository->findWhere(['status' => 'waiting']);
 
-        $clients = Client::all()->pluck('name','id');
-
+        $clients = Client::all()->pluck('name', 'id');
+        $payments = Payment::all();
         if (request()->wantsJson()) {
 
             return response()->json([
@@ -80,7 +81,7 @@ class ServicesController extends Controller
             ]);
         }
 
-        return view('schedules.index', compact('services','clients'));
+        return view('schedules.index', compact('services', 'clients', 'payments'));
     }
 
     /**
@@ -103,7 +104,7 @@ class ServicesController extends Controller
 
             $response = [
                 'message' => 'Serviço criado',
-                'data'    => $service->toArray(),
+                'data' => $service->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -115,7 +116,7 @@ class ServicesController extends Controller
         } catch (ValidatorException $e) {
             if ($request->wantsJson()) {
                 return response()->json([
-                    'error'   => true,
+                    'error' => true,
                     'message' => $e->getMessageBag()
                 ]);
             }
@@ -134,14 +135,12 @@ class ServicesController extends Controller
     public function show($id)
     {
         $service = $this->repository->find($id);
-        $products = Product::all()->pluck('name','id');
+        $products = Product::all()->pluck('name', 'id');
         $serviceItems = $service->items;
         $valorTotal = 0;
-        foreach ($serviceItems as $servicei)
-        {
+        foreach ($serviceItems as $servicei) {
             $valorTotal += $servicei->product->price->price;
-            if($servicei->discount)
-            {
+            if ($servicei->discount) {
                 $valorTotal -= $servicei->discount;
             }
         }
@@ -152,7 +151,7 @@ class ServicesController extends Controller
             ]);
         }
 
-        return view('schedules.show', compact('service','serviceItems','products','valorTotal'));
+        return view('schedules.show', compact('service', 'serviceItems', 'products', 'valorTotal'));
     }
 
     /**
@@ -165,15 +164,15 @@ class ServicesController extends Controller
     public function edit($id)
     {
         $service = $this->repository->find($id);
-        $clients = Client::all()->pluck('name','id');
-        return view('schedules.edit', compact('service','clients'));
+        $clients = Client::all()->pluck('name', 'id');
+        return view('schedules.edit', compact('service', 'clients'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  ServiceUpdateRequest $request
-     * @param  string            $id
+     * @param  string $id
      *
      * @return Response
      *
@@ -189,7 +188,7 @@ class ServicesController extends Controller
 
             $response = [
                 'message' => 'Service updated.',
-                'data'    => $service->toArray(),
+                'data' => $service->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -203,7 +202,7 @@ class ServicesController extends Controller
             if ($request->wantsJson()) {
 
                 return response()->json([
-                    'error'   => true,
+                    'error' => true,
                     'message' => $e->getMessageBag()
                 ]);
             }
@@ -235,27 +234,40 @@ class ServicesController extends Controller
         return redirect()->back()->with('message', 'Service deleted.');
     }
 
-    public function done($id)
+    public function done(Request $request)
     {
-        $service = $this->repository->find($id);
+        $dataRequest = $request->all();
+        $service = $this->repository->find($dataRequest['service_id']);
+
         $data['status'] = "done";
+
         $valorService = 0;
-        foreach($service->items as $item){
+        foreach ($service->items as $item) {
             $valorService += $item->product->price->price;
-            if($item->discount)
-            {
+            if ($item->discount) {
                 $valorService -= $item->discount;
             }
         }
+
+        $this->createInputStream($valorService, $dataRequest);
+        $this->repository->update($data, $dataRequest['service_id']);
+
+        return redirect()->back()->with('message', 'Serviço finalizado e entrada de caixa criada');
+    }
+
+    private function createInputStream($valorService, $dataRequest)
+    {
+        if ($dataRequest['value_credit']) {
+            $dataFlow['payment_id'] = 2;
+        } else {
+            $dataFlow['payment_id'] = 1;
+        }
+        $dataFlow['service_id'] = $dataRequest['service_id'];
         $dataFlow['value'] = $valorService;
         $dataFlow['type'] = 'input_stream';
         $dataFlow['description'] = 'Serviço concluído';
         $dataFlow['day'] = Carbon::now()->toDateString();
 
         $inputStream = $this->getCashFlowRepository()->create($dataFlow);
-
-        $serviceUpdate = $this->repository->update($data, $id);
-
-        return redirect()->back()->with('message', 'Serviço finalizado e entrada de caixa criada');
     }
 }
