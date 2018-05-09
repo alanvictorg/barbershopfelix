@@ -14,14 +14,14 @@
                 {!! Form::hidden('service_id',$service->id) !!}
                 <div class="col-md-6">
                     <div class="form-group{{ $errors->has("value_cash") ? ' has-error' : '' }}">
-                        {!! Form::text("value_cash", null, ["class" => "form-control", 'id'=>'value_cash','placeholder'=>"Valor pago em dinheiro"])  !!}
+                        {!! Form::text("value_cash", null, ["class" => "form-control", 'id'=>'value_cash','placeholder'=>"Valor pago em dinheiro",'required'])  !!}
                         <i class="fa fa-money forms-pay" aria-hidden="true"></i>
                         <small class="text-danger">{{ $errors->first("value_cash") }}</small>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group{{ $errors->has("value_credit") ? ' has-error' : '' }}">
-                        {!! Form::text("value_credit", null, ["class" => "form-control", 'id'=>'value_credit','placeholder'=>"Valor pago com crédito"])  !!}
+                        {!! Form::text("value_credit", null, ["class" => "form-control", 'id'=>'value_credit','placeholder'=>"Valor pago com crédito",'required'])  !!}
                         <i class="fa fa-credit-card credit-pay" aria-hidden="true"></i>
                         <small class="text-danger">{{ $errors->first("value_credit") }}</small>
                     </div>

@@ -25,6 +25,17 @@
 @section('main-content')
     <section class="content">
         <div class="row">
+            <div class="pull-right">
+                {!! Form::open(['url'=>route('schedules.filterByDate'),
+                                'enctype'=> 'multipart/form-data',
+                                'file'=>'true',
+                                'id' => 'form-filter']) !!}
+                {!! Form::date('filter_date',null,['id'=>'filter', 'class' => 'form-control']) !!}
+                {!! Form::close() !!}
+            </div>
+            <div class="pull-right" style="margin: 0 10px 30px 0">
+                {!! Form::label('filter_date','Selecionar dia: ') !!}
+            </div>
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
@@ -61,13 +72,14 @@
                                         <a href="{{ route('schedules.show',$service)}}"
                                            class="btn btn-sm btn-info"> <i class="fa fa-eye"
                                                                            aria-hidden="true"></i></a>
-                                        @if($service->status == "waiting")
-                                            <!-- <a href="{{ route('schedules.done',$service)}}"
+                                    @if($service->status == "waiting")
+                                        <!-- <a href="{{ route('schedules.done',$service)}}"
                                                class="btn btn-sm btn-success pull-right"> <i class="fa fa-check"
                                                                                aria-hidden="true"></i></a>
                                             <strong class="pull-right" style="margin: 5px 15px 0 0">Marcar como concluído</strong> !-->
                                             <a href="#" data-toggle="modal" data-target="#createmodaldone"
-                                               class="btn btn-black btn-sm rounded-s pull-right"><i class="fa fa-check"></i></a>
+                                               class="btn btn-black btn-sm rounded-s pull-right"><i
+                                                        class="fa fa-check"></i></a>
                                             @include("schedules._done")
                                         @endif
 
@@ -75,7 +87,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4">Nenhum registro foi encontrado!</td>
+                                    <td colspan="5">Nenhum registro foi encontrado!</td>
                                 </tr>
                             @endforelse
                             </thead>
@@ -100,20 +112,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
     <script>
         $(document).ready(function () {
-            var input = document.querySelector('input');;
-            input.addEventListener('input', function (){
-                console.log(this.value);
+            var filter = $("#filter");
+            var valueCash = $("#value_cash");
+            var valueCredit = $("#value_credit");
+            valueCash.on('input', function () {
+                if (valueCash.val() !== "") {
+                    valueCredit.prop('required',false)
+                }
             });
-            formatReal($('#value_cash').val());
-            function formatReal( int )
-            {
-                var tmp = int+'';
-                tmp = tmp.replace(/([0-9]{2})$/g, ",$1");
-                if( tmp.length > 6 )
-                    tmp = tmp.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
 
-                $('#value_cash').val(tmp);
-            }
+            filter.change('on', function () {
+                $('#form-filter').submit();
+            });
+
         })
     </script>
 @endsection

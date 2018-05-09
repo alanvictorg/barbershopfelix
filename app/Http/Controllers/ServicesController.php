@@ -70,7 +70,7 @@ class ServicesController extends Controller
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $services = $this->repository->findWhere(['status' => 'waiting']);
+        $services = $this->repository->findWhere(['status' => 'waiting','scheduled_day' => Carbon::now()->format('Y-m-d')]);
 
         $clients = Client::all()->pluck('name', 'id');
         $payments = Payment::all();
@@ -103,7 +103,7 @@ class ServicesController extends Controller
             $service = $this->repository->create($data);
 
             $response = [
-                'message' => 'Serviço criado',
+                'message' => 'Agendamento feito',
                 'data' => $service->toArray(),
             ];
 
@@ -187,7 +187,7 @@ class ServicesController extends Controller
             $service = $this->repository->update($request->all(), $id);
 
             $response = [
-                'message' => 'Service updated.',
+                'message' => 'Agendamento atualizado.',
                 'data' => $service->toArray(),
             ];
 
@@ -239,23 +239,28 @@ class ServicesController extends Controller
         $dataRequest = $request->all();
         $service = $this->repository->find($dataRequest['service_id']);
 
-        $data['status'] = "done";
+        if($service->items->isEmpty()){ return redirect(route('schedules.index'))->with('error', 'Adicione um serviço'); }
 
+        $data['status'] = "done";
+        $namesServices = "";
         $valorService = 0;
-        foreach ($service->items as $item) {
+
+        foreach ($service->items as $key => $item) {
             $valorService += $item->product->price->price;
+            $namesServices = $namesServices . "," . $item->product->name;
             if ($item->discount) {
                 $valorService -= $item->discount;
             }
         }
 
-        $this->createInputStream($valorService, $dataRequest);
+        $this->createInputStream($valorService, $dataRequest, $namesServices);
+
         $this->repository->update($data, $dataRequest['service_id']);
 
         return redirect()->back()->with('message', 'Serviço finalizado e entrada de caixa criada');
     }
 
-    private function createInputStream($valorService, $dataRequest)
+    private function createInputStream($valorService, $dataRequest, $namesServices)
     {
         if ($dataRequest['value_credit']) {
             $dataFlow['payment_id'] = 2;
@@ -265,9 +270,26 @@ class ServicesController extends Controller
         $dataFlow['service_id'] = $dataRequest['service_id'];
         $dataFlow['value'] = $valorService;
         $dataFlow['type'] = 'input_stream';
-        $dataFlow['description'] = 'Serviço concluído';
+        $dataFlow['description'] = 'Serviço concluído' . $namesServices;
         $dataFlow['day'] = Carbon::now()->toDateString();
 
         $inputStream = $this->getCashFlowRepository()->create($dataFlow);
+    }
+
+    public function filterByDate(Request $request)
+    {
+        $data = $request->all();
+        $services = $this->repository->findWhere(['status' => 'waiting','scheduled_day' => $data['filter_date']]);
+
+        $clients = Client::all()->pluck('name', 'id');
+        $payments = Payment::all();
+        if (request()->wantsJson()) {
+
+            return response()->json([
+                'data' => $services,
+            ]);
+        }
+
+        return view('schedules.index', compact('services', 'clients', 'payments'));
     }
 }

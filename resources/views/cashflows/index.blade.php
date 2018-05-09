@@ -24,10 +24,18 @@
 @section('main-content')
     <section class="content">
         <div class="row">
+            <div class="pull-right">
+                {!! Form::open(['url'=>route('cashflows.filterByDate'),
+                                'enctype'=> 'multipart/form-data',
+                                'file'=>'true',
+                                'id' => 'form-filter']) !!}
+                {!! Form::date('filter_date',null,['id'=>'filter', 'class' => 'form-control']) !!}
+                {!! Form::close() !!}
+            </div>
+            <div class="pull-right" style="margin: 0 10px 30px 0">
+                {!! Form::label('filter_date','Selecionar dia: ') !!}
+            </div>
             <div class="col-xs-12">
-                <div class="">
-                    {!! Form::date('selectDate',null, ["class" => "form-control","id" => "selectDate"]) !!}
-                </div>
                 <div class="box">
                     <div class="box-header">
                         <h3 class="box-title">Itens</h3>
@@ -78,9 +86,6 @@
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
-                <nav class="text-xs-right">
-                    {!!  $cashFlows->appends(['sort'=>'id'])->links() !!}
-                </nav>
             </div>
             <!-- /.col -->
         </div>
@@ -91,22 +96,12 @@
 @section('scriptpage')
     <script>
         $(document).ready(function () {
-            $('#selectDate').on("change", function () {
-                data = $(this).val();
-                $.ajax({
-                    headers: {
-                        'X-CSRF-Token': $('input[name="_token"]').val()
-                    },
-                    type: "POST",
-                    url: '{!! route('cashflows.filterByDate') !!}',
-                    data: data,
-                    enctype: 'multipart/form-data',
-
-                    success: function (data) {
-                        console.log("DEU");
-                    }
+            $(document).ready(function () {
+                var filter = $("#filter");
+                filter.change('on', function () {
+                    $('#form-filter').submit();
                 });
-            });
+            })
         })
     </script>
 @endsection

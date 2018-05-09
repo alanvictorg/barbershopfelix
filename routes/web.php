@@ -25,6 +25,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('scheduleitems', 'ServiceItemsController');
     Route::post('schedule/done', 'ServicesController@done')->name('schedules.done');
+    Route::post('schedules/filter', 'ServicesController@filterByDate')->name('schedules.filterByDate');
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -49,7 +50,7 @@ class CashFlowsController extends Controller
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $cashFlows = $this->repository->paginate(8);
+        $cashFlows = $this->repository->findWhere(['day' => Carbon::now()->format('Y-m-d')]);
 
         $types = ['input_stream' => 'Entrada', 'output_stream' => 'Saída'];
         if (request()->wantsJson()) {
@@ -203,8 +204,12 @@ class CashFlowsController extends Controller
         return redirect()->back()->with('message', 'CashFlow deleted.');
     }
 
-    public function filterByDate($date)
+    public function filterByDate(Request $request)
     {
-        dd("saddcscs");
+        $data = $request->all();
+        $cashFlows = $this->repository->findWhere(['day' => $data['filter_date']]);
+
+        $types = ['input_stream' => 'Entrada', 'output_stream' => 'Saída'];
+        return view('cashFlows.index', compact('cashFlows','types'));
     }
 }

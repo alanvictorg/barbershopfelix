@@ -7,6 +7,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\CashFlows;
 use App\Entities\CashFlow;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -36,6 +37,21 @@ class HomeController extends Controller
     {
         $paymentCash = CashFlow::where(['payment_id' => 1])->get();
         $paymentCredit = CashFlow::where(['payment_id' => 2])->get();
-        return view('adminlte::home',compact('paymentCash','paymentCredit'));
+
+        $chartjs = app()->chartjs
+            ->name('pieChartTest')
+            ->type('pie')
+            ->size(['width' => 400, 'height' => 200])
+            ->labels(['Label x', 'Label y'])
+            ->datasets([
+                [
+                    'backgroundColor' => ['#FF6384', '#36A2EB'],
+                    'hoverBackgroundColor' => ['#FF6384', '#36A2EB'],
+                    'data' => [69, 59]
+                ]
+            ])
+            ->options([]);
+
+        return view('adminlte::home', compact('paymentCash', 'paymentCredit','chartjs'));
     }
 }
