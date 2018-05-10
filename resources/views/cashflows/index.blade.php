@@ -24,7 +24,8 @@
 @section('main-content')
     <section class="content">
         <div class="row">
-            <div class="pull-right">
+            <div class="col-md-4 day">Dia: {!! \Carbon\Carbon::now()->format('d/m/Y') !!}</div>
+            <div class="col-md-3 pull-right">
                 {!! Form::open(['url'=>route('cashflows.filterByDate'),
                                 'enctype'=> 'multipart/form-data',
                                 'file'=>'true',
@@ -59,7 +60,7 @@
                             </tr>
                             @forelse($cashFlows as $item)
                                 <tr>
-                                    @if($item->type == 'input_stream')
+                                    @if($item->type == 'input_stream' or $item->type == 'reserve')
                                         <td class="btn-success">Entrada</td>
                                     @else
                                         <td class="btn-danger">Saída</td>
@@ -96,11 +97,27 @@
 @section('scriptpage')
     <script>
         $(document).ready(function () {
-            $(document).ready(function () {
-                var filter = $("#filter");
-                filter.change('on', function () {
-                    $('#form-filter').submit();
+            var filter = $("#filter");
+            filter.change('on', function () {
+                $('#form-filter').submit();
+            });
+
+            var description = $("#description");
+
+            description.on('input', function () {
+                $(this).val(function (_, val) {
+                    return val.toUpperCase();
                 });
+            })
+
+            description.on('change', function () {
+                if (description.val() === "FUNDO DE CAIXA"){
+                    document.getElementById("type").disabled = true;
+                    document.getElementById("day").disabled = true;
+                } else {
+                    document.getElementById("type").disabled = false;
+                    document.getElementById("day").disabled = false;
+                }
             })
         })
     </script>

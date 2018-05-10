@@ -77,8 +77,14 @@ class CashFlowsController extends Controller
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
+            $data = $request->all();
 
-            $cashFlow = $this->repository->create($request->all());
+            if(!isset($data['day']) && !isset($data['type'])) {
+                $data['day'] = Carbon::now()->format('Y-m-d');
+                $data['type'] = 'reserve';
+            }
+
+            $cashFlow = $this->repository->create($data);
 
             $response = [
                 'message' => 'Item adicionado ao fluxo de caixa',

@@ -70,7 +70,7 @@ class ServicesController extends Controller
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $services = $this->repository->findWhere(['status' => 'waiting','scheduled_day' => Carbon::now()->format('Y-m-d')]);
+        $services = $this->repository->findWhere(['status' => 'waiting', 'scheduled_day' => Carbon::now()->format('Y-m-d')]);
 
         $clients = Client::all()->pluck('name', 'id');
         $payments = Payment::all();
@@ -99,6 +99,16 @@ class ServicesController extends Controller
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
             $data = $request->all();
+
+            if($data['select_day'] == 'today') {
+                $data['scheduled_day'] = Carbon::now()->format('Y-m-d');
+            } elseif ($data['select_day'] == 'tomorrow') {
+                $data['scheduled_day'] = Carbon::now()->addDay()->format('Y-m-d');
+            }
+            if (!isset($data['scheduled_day'])) {
+                $data['scheduled_day'] = Carbon::now()->format('Y-m-d');
+            }
+
             $data['status'] = 'waiting';
             $service = $this->repository->create($data);
 
@@ -239,7 +249,9 @@ class ServicesController extends Controller
         $dataRequest = $request->all();
         $service = $this->repository->find($dataRequest['service_id']);
 
-        if($service->items->isEmpty()){ return redirect(route('schedules.index'))->with('error', 'Adicione um serviço'); }
+        if ($service->items->isEmpty()) {
+            return redirect(route('schedules.index'))->with('error', 'Adicione um serviço');
+        }
 
         $data['status'] = "done";
         $namesServices = "";
@@ -279,7 +291,7 @@ class ServicesController extends Controller
     public function filterByDate(Request $request)
     {
         $data = $request->all();
-        $services = $this->repository->findWhere(['status' => 'waiting','scheduled_day' => $data['filter_date']]);
+        $services = $this->repository->findWhere(['status' => 'waiting', 'scheduled_day' => $data['filter_date']]);
 
         $clients = Client::all()->pluck('name', 'id');
         $payments = Payment::all();

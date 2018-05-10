@@ -112,19 +112,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
     <script>
         $(document).ready(function () {
-            var filter = $("#filter");
-            var valueCash = $("#value_cash");
-            var valueCredit = $("#value_credit");
-            valueCash.on('input', function () {
-                if (valueCash.val() !== "") {
-                    valueCredit.prop('required',false)
+            $("#value_cash").on('input', function () {
+                if ($("#value_cash").val() !== "") {
+                    $("#value_credit").prop('required', false)
                 }
             });
 
-            filter.change('on', function () {
+            $("#filter").change('on', function () {
                 $('#form-filter').submit();
             });
 
+            $("#select-day").click(function () {
+                document.getElementById("scheduled_day").disabled = false;
+            })
+            $("#today").click(function () {
+                document.getElementById("scheduled_day").disabled = true;
+            })
+            $("#tomorrow").click(function () {
+                document.getElementById("scheduled_day").disabled = true;
+            })
         })
     </script>
 @endsection

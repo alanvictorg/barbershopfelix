@@ -229,3 +229,7 @@
 .widget-user .widget-user-header {
     background: linear-gradient(black 60%, ghostwhite) !important;
 }
+
+.day {
+    font-size: 20px;
+}

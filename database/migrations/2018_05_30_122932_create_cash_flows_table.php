@@ -25,7 +25,7 @@ class CreateCashFlowsTable extends Migration
             $table->foreign('payment_id')->references('id')->on('payments')->onDelete('cascade');
 
             $table->float('value');
-            $table->enum('type',['input_stream','output_stream']);
+            $table->enum('type',['input_stream','output_stream','reserve']);
             $table->string('description');
             $table->date('day');
 
