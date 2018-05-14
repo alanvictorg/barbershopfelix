@@ -14,7 +14,7 @@
                     <!-- small box -->
                     <div class="small-box bg-light-blue-gradient">
                         <div class="inner">
-                            <h3>{!! $paymentCash->count() !!}</h3>
+                            <h3>{!! $paymentCash !!}</h3>
 
                             <p>Pagamentos em dinheiro</p>
                         </div>
@@ -29,7 +29,7 @@
                     <!-- small box -->
                     <div class="small-box bg-lime-active">
                         <div class="inner">
-                            <h3>{!! $paymentCredit->count() !!}</h3>
+                            <h3>{!! $paymentCredit !!}</h3>
 
                             <p>Pagamentos com cartão</p>
                         </div>

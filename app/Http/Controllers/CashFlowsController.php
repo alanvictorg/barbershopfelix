@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\CashFlow;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -39,7 +40,7 @@ class CashFlowsController extends Controller
     public function __construct(CashFlowRepository $repository, CashFlowValidator $validator)
     {
         $this->repository = $repository;
-        $this->validator  = $validator;
+        $this->validator = $validator;
     }
 
     /**
@@ -50,17 +51,23 @@ class CashFlowsController extends Controller
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $cashFlows = $this->repository->findWhere(['day' => Carbon::now()->format('Y-m-d')]);
+        $cashFlows = $this->repository->findWhere(['day' => Carbon::now(-3)->format('Y-m-d')]);
 
+        $statusDay = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'reserve'])->get();
+        if ($statusDay->isNotEmpty()) {
+            $opened = true;
+        } else {
+            $opened = false;
+        }
         $types = ['input_stream' => 'Entrada', 'output_stream' => 'Saída'];
+
         if (request()->wantsJson()) {
 
             return response()->json([
                 'data' => $cashFlows,
             ]);
         }
-
-        return view('cashFlows.index', compact('cashFlows','types'));
+        return view('cashFlows.index', compact('cashFlows', 'types','opened'));
     }
 
     /**
@@ -79,16 +86,18 @@ class CashFlowsController extends Controller
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
             $data = $request->all();
 
-            if(!isset($data['day']) && !isset($data['type'])) {
-                $data['day'] = Carbon::now()->format('Y-m-d');
+            if (!isset($data['day']) && !isset($data['type'])) {
+                $data['day'] = Carbon::now(-3)->format('Y-m-d');
                 $data['type'] = 'reserve';
+                $data['value'] = $data['openVal'];
+                $data['description'] = 'FUNDO DE CAIXA';
             }
 
             $cashFlow = $this->repository->create($data);
 
             $response = [
                 'message' => 'Item adicionado ao fluxo de caixa',
-                'data'    => $cashFlow->toArray(),
+                'data' => $cashFlow->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -100,7 +109,7 @@ class CashFlowsController extends Controller
         } catch (ValidatorException $e) {
             if ($request->wantsJson()) {
                 return response()->json([
-                    'error'   => true,
+                    'error' => true,
                     'message' => $e->getMessageBag()
                 ]);
             }
@@ -148,7 +157,7 @@ class CashFlowsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  CashFlowUpdateRequest $request
-     * @param  string            $id
+     * @param  string $id
      *
      * @return Response
      *
@@ -164,7 +173,7 @@ class CashFlowsController extends Controller
 
             $response = [
                 'message' => 'CashFlow updated.',
-                'data'    => $cashFlow->toArray(),
+                'data' => $cashFlow->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -178,7 +187,7 @@ class CashFlowsController extends Controller
             if ($request->wantsJson()) {
 
                 return response()->json([
-                    'error'   => true,
+                    'error' => true,
                     'message' => $e->getMessageBag()
                 ]);
             }
@@ -214,8 +223,8 @@ class CashFlowsController extends Controller
     {
         $data = $request->all();
         $cashFlows = $this->repository->findWhere(['day' => $data['filter_date']]);
-
+        $opened = "hide";
         $types = ['input_stream' => 'Entrada', 'output_stream' => 'Saída'];
-        return view('cashFlows.index', compact('cashFlows','types'));
+        return view('cashFlows.index', compact('cashFlows', 'types','opened'));
     }
 }

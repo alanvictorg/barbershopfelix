@@ -70,7 +70,7 @@ class ServicesController extends Controller
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $services = $this->repository->findWhere(['status' => 'waiting', 'scheduled_day' => Carbon::now()->format('Y-m-d')]);
+        $services = $this->repository->findWhere(['status' => 'waiting', 'scheduled_day' => Carbon::now(-3)->format('Y-m-d')]);
 
         $clients = Client::all()->pluck('name', 'id');
         $payments = Payment::all();
@@ -101,12 +101,12 @@ class ServicesController extends Controller
             $data = $request->all();
 
             if($data['select_day'] == 'today') {
-                $data['scheduled_day'] = Carbon::now()->format('Y-m-d');
+                $data['scheduled_day'] = Carbon::now(-3)->format('Y-m-d');
             } elseif ($data['select_day'] == 'tomorrow') {
-                $data['scheduled_day'] = Carbon::now()->addDay()->format('Y-m-d');
+                $data['scheduled_day'] = Carbon::now(-3)->addDay()->format('Y-m-d');
             }
             if (!isset($data['scheduled_day'])) {
-                $data['scheduled_day'] = Carbon::now()->format('Y-m-d');
+                $data['scheduled_day'] = Carbon::now(-3)->format('Y-m-d');
             }
 
             $data['status'] = 'waiting';
@@ -283,7 +283,7 @@ class ServicesController extends Controller
         $dataFlow['value'] = $valorService;
         $dataFlow['type'] = 'input_stream';
         $dataFlow['description'] = 'Serviço concluído' . $namesServices;
-        $dataFlow['day'] = Carbon::now()->toDateString();
+        $dataFlow['day'] = Carbon::now(-3)->toDateString();
 
         $inputStream = $this->getCashFlowRepository()->create($dataFlow);
     }
