@@ -14,7 +14,7 @@
                 {!! Form::hidden('service_id',$service->id) !!}
                 <div class="col-md-6">
                     <div class="form-group{{ $errors->has("value_cash") ? ' has-error' : '' }}">
-                        {!! Form::text("value_cash", null, ["class" => "form-control", 'id'=>'value_cash','placeholder'=>"Valor pago em dinheiro",'required'])  !!}
+                        {!! Form::text("value_cash", null, ["class" => "form-control", 'id'=>'value_cash','placeholder'=>"Valor pago em dinheiro"])  !!}
                         <i class="fa fa-money forms-pay" aria-hidden="true"></i>
                         <small class="text-danger">{{ $errors->first("value_cash") }}</small>
                     </div>

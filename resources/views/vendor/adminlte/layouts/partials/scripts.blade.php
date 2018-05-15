@@ -4,6 +4,9 @@
 <!-- Laravel App -->
 <script src="{{ asset('/js/app.js') }}" type="text/javascript"></script>
 <script type="application/javascript" src="{{ asset('/plugins/sweetalert2/js/sweetalert.min.js') }}"></script>
+<script src="{{ asset('/plugins/fullcalendar-3.9.0/fullcalendar.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/plugins/fullcalendar-3.9.0/locale-all.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/plugins/fullcalendar-3.9.0/locale/pt-br.js') }}" type="text/javascript"></script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
       Both of these plugins are recommended to enhance the

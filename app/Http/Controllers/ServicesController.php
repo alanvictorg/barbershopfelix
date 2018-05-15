@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Client;
+use App\Entities\EventModel;
 use App\Entities\Payment;
 use App\Entities\Product;
 use App\Repositories\CashFlowRepository;
@@ -99,7 +100,6 @@ class ServicesController extends Controller
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
             $data = $request->all();
-
             if($data['select_day'] == 'today') {
                 $data['scheduled_day'] = Carbon::now(-3)->format('Y-m-d');
             } elseif ($data['select_day'] == 'tomorrow') {
@@ -108,6 +108,10 @@ class ServicesController extends Controller
             if (!isset($data['scheduled_day'])) {
                 $data['scheduled_day'] = Carbon::now(-3)->format('Y-m-d');
             }
+            $hour = explode(':',$data['scheduled_hour']);
+            $eventModel = EventModel::create(['title'=> Client::find($data['client_id'])->name, 'all_day' => 0,
+                'start' => Carbon::parse($data['scheduled_day'])->addHour($hour[0])->addMinutes($hour[1]),
+                'end' => Carbon::parse($data['scheduled_day'])->addHour($hour[0]+1)->addMinutes($hour[1])]);
 
             $data['status'] = 'waiting';
             $service = $this->repository->create($data);
