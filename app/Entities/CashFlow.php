@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -13,6 +14,7 @@ use Prettus\Repository\Traits\TransformableTrait;
  */
 class CashFlow extends Model implements Transformable
 {
+    use SoftDeletes;
     use TransformableTrait;
 
     /**
@@ -20,6 +22,8 @@ class CashFlow extends Model implements Transformable
      *
      * @var array
      */
+    protected $dates = ['deleted_at'];
+
     protected $fillable = [
         'service_id',
         'payment_id',
@@ -29,8 +33,4 @@ class CashFlow extends Model implements Transformable
         'day'
     ];
 
-    public function paymentForm()
-    {
-
-    }
 }

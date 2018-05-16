@@ -61,13 +61,18 @@ class CashFlowsController extends Controller
         }
         $types = ['input_stream' => 'Entrada', 'output_stream' => 'Saída'];
 
+        $reserve = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'reserve'])->sum('value');
+        $output = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'output_stream'])->sum('value');
+        $input = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'input_stream'])->sum('value');
+        $balance = $input + $reserve - $output;
+
         if (request()->wantsJson()) {
 
             return response()->json([
                 'data' => $cashFlows,
             ]);
         }
-        return view('cashFlows.index', compact('cashFlows', 'types','opened'));
+        return view('cashFlows.index', compact('cashFlows', 'types', 'opened', 'balance', 'input', 'output'));
     }
 
     /**
@@ -225,6 +230,29 @@ class CashFlowsController extends Controller
         $cashFlows = $this->repository->findWhere(['day' => $data['filter_date']]);
         $opened = "hide";
         $types = ['input_stream' => 'Entrada', 'output_stream' => 'Saída'];
-        return view('cashFlows.index', compact('cashFlows', 'types','opened'));
+        return view('cashFlows.index', compact('cashFlows', 'types', 'opened'));
+    }
+
+    public function closeDay()
+    {
+        $cashFlows = $this->repository->findWhere(['day' => Carbon::now(-3)->format('Y-m-d')]);
+
+        $cashflows = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d')])->delete();
+        $statusDay = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'reserve'])->get();
+
+        if ($statusDay->isNotEmpty()) {
+            $opened = true;
+        } else {
+            $opened = false;
+        }
+        $types = ['input_stream' => 'Entrada', 'output_stream' => 'Saída'];
+
+        $reserve = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'reserve'])->sum('value');
+        $output = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'output_stream'])->sum('value');
+        $input = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'input_stream'])->sum('value');
+        $balance = $input + $reserve - $output;
+
+        return view('cashFlows.index', compact('cashFlows', 'types', 'opened', 'balance', 'input', 'output'));
+
     }
 }

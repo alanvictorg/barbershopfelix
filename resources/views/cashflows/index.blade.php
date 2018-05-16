@@ -61,6 +61,7 @@
                                    class="btn btn-sm rounded-s"><i class="fa fa-plus icon"></i> Fechar Caixa </a>
                             @endif
                             @include("cashflows._open")
+                            @include("cashflows._close")
                         </div>
                     </div>
                     <!-- /.box-header -->

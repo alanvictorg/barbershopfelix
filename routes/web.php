@@ -22,6 +22,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('schedules', 'ServicesController');
     Route::resource('cashflows', 'CashFlowsController');
     Route::post('cashflows/filter-date', 'CashFlowsController@filterByDate')->name('cashflows.filterByDate');
+    Route::post('cashflows/close-day', 'CashFlowsController@closeDay')->name('cashflows.closeDay');
 
     Route::resource('scheduleitems', 'ServiceItemsController');
     Route::post('schedule/done', 'ServicesController@done')->name('schedules.done');

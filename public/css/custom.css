@@ -267,3 +267,9 @@
 .offset-md-11 {
     margin-left: 91.666667%;
 }
+.fc-icon-left-single-arrow:after {
+    font-size: 40px !important;
+}
+.fc-icon-right-single-arrow:after {
+    font-size: 40px !important;
+}

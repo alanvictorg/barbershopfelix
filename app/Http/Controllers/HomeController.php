@@ -88,7 +88,7 @@ class HomeController extends Controller
     }
 
     protected function getServicesBydayOfWeek() {
-        $allServices = Service::where('status','done')->get();
+        $allServices = Service::withTrashed()->where('status','done')->get();
         $monday = null; $tuesday = null; $wednesday = null; $thursday = null; $friday = null; $saturday = null; $sunday = null;
 
         foreach ($allServices as $service) {
