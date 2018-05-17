@@ -39,12 +39,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $totalPayments = CashFlow::where('payment_id', '!=', '')->count();
+        $totalPayments = CashFlow::withTrashed()->where('payment_id', '!=', '')->count();
         if ($totalPayments == 0) {
             $totalPayments = 1;
         }
-            $paymentCash = (CashFlow::where(['payment_id' => 1])->count() / $totalPayments) * 100;
-            $paymentCredit = (CashFlow::where(['payment_id' => 2])->count() / $totalPayments) * 100;
+
+        $paymentCash = (CashFlow::withTrashed()->where(['payment_id' => 1])->count() / $totalPayments) * 100;
+        $paymentCredit = (CashFlow::withTrashed()->where(['payment_id' => 2])->count() / $totalPayments) * 100;
 
         $events = [];
         $eloquentModel = EventModel::all();
@@ -59,7 +60,7 @@ class HomeController extends Controller
                 [
                     'backgroundColor' => ['rgb(167,167,167)', 'rgb(247,135,61)'],
                     'hoverBackgroundColor' => ['rgb(167,167,167)', 'rgb(247,135,61)'],
-                    'data' => [50, $paymentCredit]
+                    'data' => [number_format($paymentCash,1), number_format($paymentCredit,1)]
                 ]
             ])
             ->options([]);
@@ -73,7 +74,7 @@ class HomeController extends Controller
             ->labels(['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'])
             ->datasets([
                 [
-                    "label" => "Serviços",
+                    "label" => "Quantidade de Serviços",
                     'backgroundColor' => "rgb(3,153,224)",
                     'borderColor' => "rgb(6,101,146)",
                     "pointBorderColor" => "black",
@@ -84,28 +85,35 @@ class HomeController extends Controller
                 ],
             ]);
 
-        return view('adminlte::home', compact('paymentCash', 'paymentCredit', 'chartPayments', 'chartReport','calendar'));
+        return view('adminlte::home', compact('paymentCash', 'paymentCredit', 'chartPayments', 'chartReport', 'calendar'));
     }
 
-    protected function getServicesBydayOfWeek() {
-        $allServices = Service::withTrashed()->where('status','done')->get();
-        $monday = null; $tuesday = null; $wednesday = null; $thursday = null; $friday = null; $saturday = null; $sunday = null;
+    protected function getServicesBydayOfWeek()
+    {
+        $allServices = Service::withTrashed()->where('status', 'done')->get();
+        $monday = null;
+        $tuesday = null;
+        $wednesday = null;
+        $thursday = null;
+        $friday = null;
+        $saturday = null;
+        $sunday = null;
 
         foreach ($allServices as $service) {
             if (Carbon::parse($service['scheduled_day'])->dayOfWeek == 1) {
                 $monday++;
             } elseif (Carbon::parse($service['scheduled_day'])->dayOfWeek == 2) {
                 $tuesday++;
-            }elseif (Carbon::parse($service['scheduled_day'])->dayOfWeek == 3) {
+            } elseif (Carbon::parse($service['scheduled_day'])->dayOfWeek == 3) {
                 $wednesday++;
-            }elseif (Carbon::parse($service['scheduled_day'])->dayOfWeek == 4) {
+            } elseif (Carbon::parse($service['scheduled_day'])->dayOfWeek == 4) {
                 $thursday++;
-            }elseif (Carbon::parse($service['scheduled_day'])->dayOfWeek == 5) {
+            } elseif (Carbon::parse($service['scheduled_day'])->dayOfWeek == 5) {
                 $friday++;
-            }elseif (Carbon::parse($service['scheduled_day'])->dayOfWeek == 6) {
+            } elseif (Carbon::parse($service['scheduled_day'])->dayOfWeek == 6) {
                 $saturday++;
             }
         }
-        return [$monday,$tuesday,$wednesday,$thursday,$friday,$saturday];
+        return [$monday, $tuesday, $wednesday, $thursday, $friday, $saturday];
     }
 }
