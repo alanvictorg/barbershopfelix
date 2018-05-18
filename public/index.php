@@ -64,16 +64,16 @@ $app->get('/cowsay', function() use($app) {
     return "<pre>".\Cowsayphp\Cow::say("Cool beans")."</pre>";
 });
 
-$dbopts = parse_url('postgres://zemhfsjztjyquf:2b9333cf4631e1820af126c5713d49b88d8208708e59cbd8e01943ee0f740128@ec2-107-21-126-193.compute-1.amazonaws.com:5432/d53kaksme3bm6d');
+$dbopts = parse_url(getenv('DATABASE_URL'));
 $app->register(new Csanquer\Silex\PdoServiceProvider\Provider\PDOServiceProvider('pdo'),
     array(
         'pdo.server' => array(
             'driver'   => 'pgsql',
-            'user' => 'zemhfsjztjyquf',
-            'password' => '2b9333cf4631e1820af126c5713d49b88d8208708e59cbd8e01943ee0f740128',
-            'host' => 'ec2-107-21-126-193.compute-1.amazonaws.com',
-            'port' => 5432,
-            'dbname' => 'd53kaksme3bm6d'
+            'user' => $dbopts["user"],
+            'password' => $dbopts["pass"],
+            'host' => $dbopts["host"],
+            'port' => $dbopts["port"],
+            'dbname' => ltrim($dbopts["path"],'/')
         )
     )
 );
