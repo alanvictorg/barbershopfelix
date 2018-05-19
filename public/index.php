@@ -59,6 +59,7 @@ $response->send();
 
 $kernel->terminate($request, $response);
 
+/*
 $app->get('/cowsay', function() use($app) {
     $app['monolog']->addDebug('cowsay');
     return "<pre>".\Cowsayphp\Cow::say("Cool beans")."</pre>";
@@ -91,4 +92,4 @@ $app->get('/db/', function() use($app) {
     return $app['twig']->render('database.twig', array(
         'names' => $names
     ));
-});
+});*/
