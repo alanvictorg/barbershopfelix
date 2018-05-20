@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     <!-- /.box-header -->
-                    <div class="box-body">
+                    <div class="box-body table-responsive">
                         <table id="table-permission" class="table table-bordered table-hover">
                             <thead>
                             <tr>
