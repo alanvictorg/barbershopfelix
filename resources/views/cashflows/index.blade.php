@@ -24,8 +24,8 @@
 @section('main-content')
     <section class="content">
         <div class="row">
-            <div class="col-md-4 day">Dia: {!! \Carbon\Carbon::now(-3)->format('d/m/Y') !!}</div>
-            <div class="col-md-3 pull-right">
+            <div class="col-md-4 day" id="dia" >Dia: {!! \Carbon\Carbon::now(-3)->format('d/m/Y') !!}</div>
+            <div class="col-md-3 pull-right" id="data-form">
                 {!! Form::open(['url'=>route('cashflows.filterByDate'),
                                 'enctype'=> 'multipart/form-data',
                                 'file'=>'true',
@@ -33,7 +33,7 @@
                 {!! Form::date('filter_date',null,['id'=>'filter', 'class' => 'form-control']) !!}
                 {!! Form::close() !!}
             </div>
-            <div class="pull-right" style="margin: 0 10px 30px 0">
+            <div class="pull-right" id="selecionar-form" style="margin: 0 10px 30px 0">
                 {!! Form::label('filter_date','Selecionar dia: ') !!}
             </div>
             <div class="col-xs-12">
@@ -53,12 +53,12 @@
                             @if(!$opened)
                                 <a href="#" data-toggle="modal" style="background-color: limegreen; color: white;"
                                    data-target="#abrircaixa"
-                                   class="btn btn-sm rounded-s"><i class="fa fa-plus icon"></i> Abrir Caixa </a>
+                                   class="btn btn-sm rounded-s" id="abrir-caixa"><i class="fa fa-plus icon"></i> Abrir Caixa </a>
                             @elseif($opened === 'hide')
                             @else
                                 <a href="#" data-toggle="modal" style="background-color: red; color: white;"
                                    data-target="#fecharcaixa"
-                                   class="btn btn-sm rounded-s"><i class="fa fa-plus icon"></i> Fechar Caixa </a>
+                                   class="btn btn-sm rounded-s" id="fechar-caixa"><i class="fa fa-plus icon"></i> Fechar Caixa </a>
                             @endif
                             @include("cashflows._open")
                             @include("cashflows._close")
@@ -113,6 +113,15 @@
 @section('scriptpage')
     <script>
         $(document).ready(function () {
+            if ($(window).width() <= 380) {
+                document.getElementById('data-form').classList.remove('pull-right')
+                document.getElementById('selecionar-form').classList.remove('pull-right')
+                document.getElementById('selecionar-form').style = "text-align:center"
+                document.getElementById('dia').style = "text-align:center"
+                document.getElementById('abrir-caixa').style.marginTop =  "5px"
+                document.getElementById('fechar-caixa').style.marginTop =  "5px"
+            }
+
             var filter = $("#filter");
             filter.change('on', function () {
                 $('#form-filter').submit();

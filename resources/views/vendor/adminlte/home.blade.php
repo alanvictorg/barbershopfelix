@@ -19,11 +19,21 @@
             <div class="col-md-6">
                 {!! $chartPayments->render() !!}
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" id="chart">
                 {!! $chartReport->render() !!}
             </div>
         </div>
     </div>
 @endsection
 @section('scriptpage')
+    <script>
+        $(document).ready(function () {
+            if ($(window).width() <= 425) {
+                document.getElementsByClassName('fc-right')[0].style = "float: left; margin-top: 5px;"
+            }
+            if ($(window).width() <= 972) {
+                document.getElementById("chart").style = "margin-top: 30px;"
+            }
+            })
+    </script>
 @endsection
