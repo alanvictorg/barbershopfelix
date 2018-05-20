@@ -72,7 +72,7 @@ class CashFlowsController extends Controller
                 'data' => $cashFlows,
             ]);
         }
-        return view('cashFlows.index', compact('cashFlows', 'types', 'opened', 'balance', 'input', 'output'));
+        return view('cashflows.index', compact('cashFlows', 'types', 'opened', 'balance', 'input', 'output'));
     }
 
     /**
@@ -141,7 +141,7 @@ class CashFlowsController extends Controller
             ]);
         }
 
-        return view('cashFlows.show', compact('cashFlow'));
+        return view('cashflows.show', compact('cashFlow'));
     }
 
     /**
@@ -155,7 +155,7 @@ class CashFlowsController extends Controller
     {
         $cashFlow = $this->repository->find($id);
 
-        return view('cashFlows.edit', compact('cashFlow'));
+        return view('cashflows.edit', compact('cashFlow'));
     }
 
     /**
@@ -230,7 +230,7 @@ class CashFlowsController extends Controller
         $cashFlows = $this->repository->findWhere(['day' => $data['filter_date']]);
         $opened = "hide";
         $types = ['input_stream' => 'Entrada', 'output_stream' => 'Saída'];
-        return view('cashFlows.index', compact('cashFlows', 'types', 'opened'));
+        return view('cashflows.index', compact('cashFlows', 'types', 'opened'));
     }
 
     public function closeDay()
@@ -252,7 +252,7 @@ class CashFlowsController extends Controller
         $input = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'input_stream'])->sum('value');
         $balance = $input + $reserve - $output;
 
-        return view('cashFlows.index', compact('cashFlows', 'types', 'opened', 'balance', 'input', 'output'));
+        return view('cashflows.index', compact('cashFlows', 'types', 'opened', 'balance', 'input', 'output'));
 
     }
 }
