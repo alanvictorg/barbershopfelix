@@ -235,8 +235,6 @@ class CashFlowsController extends Controller
 
     public function closeDay()
     {
-        $cashFlows = $this->repository->findWhere(['day' => Carbon::now(-3)->format('Y-m-d')]);
-
         $cashflows = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d')])->delete();
         $statusDay = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'reserve'])->get();
 
@@ -251,6 +249,7 @@ class CashFlowsController extends Controller
         $output = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'output_stream'])->sum('value');
         $input = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'input_stream'])->sum('value');
         $balance = $input + $reserve - $output;
+        $cashFlows = $this->repository->findWhere(['day' => Carbon::now(-3)->format('Y-m-d')]);
 
         return view('cashflows.index', compact('cashFlows', 'types', 'opened', 'balance', 'input', 'output'));
 
