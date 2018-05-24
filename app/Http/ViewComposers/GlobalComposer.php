@@ -16,7 +16,6 @@ class GlobalComposer
         $rota_atual = $route->uri;
 
         $view->with('rota_atual', $rota_atual);
-
     }
 
 }

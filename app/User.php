@@ -2,6 +2,9 @@
 
 namespace App;
 
+use App\Entities\Module;
+use App\Entities\Permission;
+use App\Entities\Role;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -26,4 +29,27 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_users');
+    }
+
+    public function isSuperAdmin()
+    {
+        return $this->roles->first()->slug == "admin" ? true : false;
+    }
+
+    public function permissions()
+    {
+        $roles = $this->roles()->get();
+        $role_permission = \App\Entities\RolePermission::whereIn('role_id', $roles)->with('permissions')->pluck('permission_id');
+        return \App\Entities\Permission::whereIn('id', $role_permission)->get();
+    }
+
+    public function hasPermission(Permission $permission)
+    {
+        $permissions = $this->permissions()->where('id', $permission->id);
+        return $permissions->isEmpty() ? false : true;
+    }
 }

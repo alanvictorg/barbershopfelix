@@ -34,19 +34,28 @@
                 <a href="#"><i class='fa fa-plus'></i> <span>Cadastros</span> <i
                             class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li {{ $rota_atual == 'users' ?  "class=active" : ""}}><a href="{{ route('users.index') }}"><i
-                                    class='fa fa-user-secret'></i> <span>Usuários</span></a></li>
-                    <li {{ $rota_atual == 'clients' ?  "class=active" : ""}}><a href="{{ route('clients.index') }}"><i
-                                    class='fa fa-male'></i> <span>Clientes</span></a></li>
-                    <li {{ $rota_atual == 'products' ?  "class=active" : ""}}><a href="{{ route('products.index') }}"><i
-                                    class='fa fa-scissors'></i> <span>Produtos</span></a></li>
+                    @can('users')
+                        <li {{ $rota_atual == 'users' ?  "class=active" : ""}}><a href="{{ route('users.index') }}"><i
+                                        class='fa fa-user-secret'></i> <span>Usuários</span></a></li>
+                    @endcan
+                    @can('clients')
+                        <li {{ $rota_atual == 'clients' ?  "class=active" : ""}}><a href="{{ route('clients.index') }}"><i
+                                        class='fa fa-male'></i> <span>Clientes</span></a></li>
+                    @endcan
+                    @can('products')
+                        <li {{ $rota_atual == 'products' ?  "class=active" : ""}}><a
+                                    href="{{ route('products.index') }}"><i
+                                        class='fa fa-scissors'></i> <span>Produtos</span></a></li>
+                    @endcan
                 </ul>
-            <li {{ $rota_atual == 'schedules' ?  "class=active" : ""}}><a href="{{ route('schedules.index') }}"><i
-                            class='fa fa-calendar-check-o'></i> <span>Agendamentos</span></a></li>
-            <li {{ $rota_atual == 'cashflows' ?  "class=active" : ""}}><a href="{{ route('cashflows.index') }}"><i
-                            class='fa fa-dollar'></i> <span>Fluxo de Caixa</span></a></li>
-
-            </li>
+            @can('schedules')
+                <li {{ $rota_atual == 'schedules' ?  "class=active" : ""}}><a href="{{ route('schedules.index') }}"><i
+                                class='fa fa-calendar-check-o'></i> <span>Agendamentos</span></a></li>
+            @endcan
+            @can('cashflows')
+                <li {{ $rota_atual == 'cashflows' ?  "class=active" : ""}}><a href="{{ route('cashflows.index') }}"><i
+                                class='fa fa-dollar'></i> <span>Fluxo de Caixa</span></a></li>
+            @endcan
         </ul><!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->
