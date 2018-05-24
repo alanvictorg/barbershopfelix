@@ -16,11 +16,11 @@ Route::get('/', function () {
 })->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::resource('users', 'UsersController');
-    Route::resource('clients', 'ClientsController');
-    Route::resource('products', 'ProductsController');
-    Route::resource('schedules', 'ServicesController');
-    Route::resource('cashflows', 'CashFlowsController');
+    Route::resource('users', 'UsersController')->middleware('can:users');
+    Route::resource('clients', 'ClientsController')->middleware('can:clients');
+    Route::resource('products', 'ProductsController')->middleware('can:products');
+    Route::resource('schedules', 'ServicesController')->middleware('can:schedules');
+    Route::resource('cashflows', 'CashFlowsController')->middleware('can:cashflows');
     Route::post('cashflows/filter-date', 'CashFlowsController@filterByDate')->name('cashflows.filterByDate');
     Route::post('cashflows/close-day', 'CashFlowsController@closeDay')->name('cashflows.closeDay');
 

@@ -1,30 +1,40 @@
-<!DOCTYPE html>
-<html>
+{{--@extends('frontend.layouts.base')--}}
+{{--@yield('content')--}}
+<!--~~~~~~~~~~~~~~~~~~~~~~~~-->
+<!--Intro -->
+<!--~~~~~~~~~~~~~~~~~~~~~~~~-->
+<section id="intro">
 
-@include('layouts.header')
-<body>
-    <div id="app" v-cloak>
-        <!-- Main content -->
-        <section class="content">
+    <div class="maskWrapper">
+        <div class="simple-image-mask"></div>
+    </div>
+
+
+    <div class="container text-center valign">
+        <div class="row">
             <div class="col-md-8 col-md-offset-2 text-center">
                 <!--slide-->
                 <div class="introItem">
                     <h1>;(</h1>
 
                     <h1>Descupe,
-                        <small> parece que você não tem autorização necessária para acessar esta pagina! <br>Tente entrar em contato conosco: contato@includetecnologia.com.br </small>
+                        <small> parece que você não tem autorização necessária para acessar esta pagina! <br>Tente entrar em contato comigo: alanvictorgp@gmail.com </small>
                     </h1>
 
+                {{-- <span class="subWhite"></span> --}}
+                <!--search -->
+                    <div class="search widget">
+
+                    </div>
                     <!--end search -->
                 </div>
                 <!--end slide-->
 
-                
+
             </div>
-        </section>
+        </div>
     </div>
-    @section('scripts')
-        @include('layouts.partials.scripts')
-    @show
-</body>
-</html>
+</section>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~-->
+<!-- Fim Intro -->
+<!--~~~~~~~~~~~~~~~~~~~~~~~~-->

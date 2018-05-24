@@ -18,7 +18,6 @@
                     <h1>;(</h1>
 
                     <h1>Descupe,
-                        <small> parece que você não tem autorização necessária para acessar esta pagina! <br>Tente entrar em contato conosco: contato@includetecnologia.com.br </small>
                     </h1>
 
                     <!--end search -->

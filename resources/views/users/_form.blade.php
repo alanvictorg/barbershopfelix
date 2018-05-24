@@ -20,6 +20,13 @@
         <small class="text-danger">{{ $errors->first("imagepath") }}</small>
     </div>
 </div>
+<div class="col-md-12">
+    <div class="form-group{{ $errors->has("type") ? ' has-error' : '' }}">
+        {!! Form::label("type", 'É barbeiro?', ['class' => '']) !!}
+        {!! Form::checkbox("type",true,['class' => 'form-control']) !!}
+        <small class="text-danger">{{ $errors->first("imagepath") }}</small>
+    </div>
+</div>
 
 
 

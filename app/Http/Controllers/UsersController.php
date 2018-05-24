@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\RoleUser;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -38,14 +39,24 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        $image = Storage::disk('public')->put("/images", $request->file('imagepath') );
+        if (null !== $request->file('imagepath') ) {
+            $image = Storage::disk('public')->put("/images", $request->file('imagepath'));
+        }
         $data = $request->all();
-        User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt('123456'),
-            'imagepath' => $image
+            'imagepath' => isset($image) ? $image : null
         ]);
+
+        if (isset($data['type'])) {
+            RoleUser::create([
+                'role_id' => 2,
+                'user_id' => $user->id
+            ]);
+        }
+
         $response = [
             'message' => 'Usuário cadastrado',
         ];
