@@ -6,6 +6,7 @@ use App\Entities\Client;
 use App\Entities\EventModel;
 use App\Entities\Payment;
 use App\Entities\Product;
+use App\Entities\Service;
 use App\Repositories\CashFlowRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -71,7 +72,7 @@ class ServicesController extends Controller
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $services = $this->repository->findWhere(['status' => 'waiting', 'scheduled_day' => Carbon::now(-3)->format('Y-m-d')]);
+        $services = Service::where('status' ,'waiting')->where('scheduled_day', Carbon::now(-3)->format('Y-m-d'))->orderBy('scheduled_hour')->get();
 
         $clients = Client::all()->pluck('name', 'id');
         $payments = Payment::all();
@@ -110,8 +111,8 @@ class ServicesController extends Controller
             }
             $hour = explode(':',$data['scheduled_hour']);
             $eventModel = EventModel::create(['title'=> Client::find($data['client_id'])->name, 'all_day' => 0,
-                'start' => Carbon::parse($data['scheduled_day'])->addHour($hour[0])->addMinutes($hour[1]),
-                'end' => Carbon::parse($data['scheduled_day'])->addHour($hour[0]+1)->addMinutes($hour[1])]);
+                'start' => Carbon::parse($data['scheduled_day'])->addHour($hour[0])->addMinutes(isset($hour[1]) ? $hour[1] : 0),
+                'end' => Carbon::parse($data['scheduled_day'])->addHour($hour[0]+1)->addMinutes(isset($hour[1]) ? $hour[1] : 0)]);
 
             $data['status'] = 'waiting';
             $service = $this->repository->create($data);

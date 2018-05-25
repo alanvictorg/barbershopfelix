@@ -57,5 +57,8 @@ class Handler extends ExceptionHandler
         ];
 
         return response()->view('errors.403');
+
+       /** return parent::render($request, $exception);*/
+
     }
 }
