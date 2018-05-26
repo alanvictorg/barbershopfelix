@@ -24,7 +24,9 @@
 @section('main-content')
     <section class="content">
         <div class="row">
-            <div class="col-md-4 day" id="dia" >Dia: {!! \Carbon\Carbon::now(-3)->format('d/m/Y') !!}</div>
+            @if(isset($date))
+                <div class="col-md-4 day" id="dia">Dia: {!! \Carbon\Carbon::now(-3)->format('d/m/Y') !!}</div>
+            @endif
             <div class="col-md-3 pull-right" id="data-form">
                 {!! Form::open(['url'=>route('cashflows.filterByDate'),
                                 'enctype'=> 'multipart/form-data',
@@ -34,38 +36,43 @@
                 {!! Form::close() !!}
             </div>
             <div class="pull-right" id="selecionar-form" style="margin: 0 10px 30px 0">
-                {!! Form::label('filter_date','Selecionar dia: ') !!}
+                {!! Form::label('filter_date','Selecionar dia ') !!}
             </div>
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
                         <h3 class="box-title">Itens</h3>
-
-                        <div class="pull-right">
-                            <!-- Button trigger modal -->
-                            <a href="#" data-toggle="modal" data-target="#createmodal"
-                               class="btn btn-black btn-sm rounded-s"><i class="fa fa-plus icon"></i> Adicionar
-                                Item ao fluxo de caixa </a>
-                            @include("cashflows._create")
-                        </div>
-                        <div class="pull-right col-md-2">
+                        @if($actualDate === \Carbon\Carbon::now(-3)->format('Y-m-d'))
+                            <div class="pull-right">
+                                <!-- Button trigger modal -->
+                                <a href="#" data-toggle="modal" data-target="#createmodal"
+                                   class="btn btn-black btn-sm rounded-s"><i class="fa fa-plus icon"></i> Adicionar
+                                    Item ao fluxo de caixa </a>
+                                @include("cashflows._create")
+                            </div>
+                        @endif
+                        <div class="pull-right col-md-2 abrir-fechar-caixa">
                             <!-- Button trigger modal -->
                             @if(!$opened)
                                 <a href="#" data-toggle="modal" style="background-color: limegreen; color: white;"
                                    data-target="#abrircaixa"
-                                   class="btn btn-sm rounded-s" id="abrir-caixa"><i class="fa fa-plus icon"></i> Abrir Caixa </a>
+                                   class="btn btn-sm rounded-s" id="abrir-caixa"><i class="fa fa-plus icon"></i>
+                                    Abrir
+                                    Caixa </a>
                             @elseif($opened === 'hide')
                             @else
                                 <a href="#" data-toggle="modal" style="background-color: red; color: white;"
                                    data-target="#fecharcaixa"
-                                   class="btn btn-sm rounded-s" id="fechar-caixa"><i class="fa fa-plus icon"></i> Fechar Caixa </a>
+                                   class="btn btn-sm rounded-s" id="fechar-caixa"><i class="fa fa-plus icon"></i>
+                                    Fechar
+                                    Caixa </a>
                             @endif
                             @include("cashflows._open")
                             @include("cashflows._close")
                         </div>
                     </div>
                     <!-- /.box-header -->
-                    <div class="box-body">
+                    <div class="box-body table-responsive">
                         <table id="table-permission" class="table table-bordered table-hover">
                             <thead>
                             <tr>
@@ -118,12 +125,12 @@
                 document.getElementById('selecionar-form').classList.remove('pull-right')
                 document.getElementById('selecionar-form').style = "text-align:center"
                 document.getElementById('dia').style = "text-align:center"
-                document.getElementById('abrir-caixa').style.marginTop =  "5px"
-                document.getElementById('fechar-caixa').style.marginTop =  "5px"
+                document.getElementById('abrir-caixa').style.marginTop = "5px"
+                document.getElementById('fechar-caixa').style.marginTop = "5px"
             }
 
             var filter = $("#filter");
-            filter.change('on', function () {
+            filter.on('change', function () {
                 $('#form-filter').submit();
             });
 

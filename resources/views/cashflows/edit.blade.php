@@ -10,20 +10,20 @@
     {!! Html::style('plugins/datatables/jquery.dataTables.min.css') !!}
 @endsection
 @section('contentheader_title')
-    Edição de Produto
+    Edição de Item de Fluxo
 @endsection
 @section('contentheader_description')
-    Editar Produto
+    Editar Fluxo
 @endsection
 @section('breadcrumb')
     <li>
         <a href="{!! route('home')!!}"><i class="fa fa-dashboard"></i>Inicial</a>
     </li>
     <li>
-        <a href="{!! route('products.index')!!}"><i class="fa fa-feed"></i> Listagem de Produtos</a>
+        <a href="{!! route('cashflows.index')!!}"><i class="fa fa-feed"></i> Fluxo</a>
     </li>
     <li class="active">
-        Edição de Produto - {!! $product->name !!}
+        Edição de Fluxo - {!! $cashFlow->name !!}
 
     </li>
 @endsection
@@ -34,13 +34,13 @@
                 <div class="box">
                     @include('errors._check')
                     <div class="box-body">
-                        {!! Form::model($product,[
-                            'route'=>['products.update', $product->id],
+                        {!! Form::model($cashFlow,[
+                            'route'=>['cashflows.update', $cashFlow->id],
                             'method' => 'put',
                             'files' => true
                             ])
                         !!}
-                        @include('products._form')
+                        @include('cashflows._form')
                         <div class="row">
                             <div class="col-md-12">
                                 {!! Form::submit('Salvar', ['class'=>'btn btn-info pull-right publish']) !!}

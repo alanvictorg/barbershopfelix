@@ -48,7 +48,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        $json = [
+        /** $json = [
             'success' => false,
             'error' => [
                 'code' => $exception->getCode(),
@@ -56,9 +56,9 @@ class Handler extends ExceptionHandler
             ],
         ];
 
-        return response()->view('errors.403');
+        return response()->view('errors.403');*/
 
-       /** return parent::render($request, $exception);*/
+       return parent::render($request, $exception);
 
     }
 }

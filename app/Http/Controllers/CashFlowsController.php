@@ -52,7 +52,8 @@ class CashFlowsController extends Controller
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
         $cashFlows = $this->repository->findWhere(['day' => Carbon::now(-3)->format('Y-m-d')]);
-
+        $date = true;
+        $actualDate = Carbon::now(-3)->format('Y-m-d');
         $statusDay = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'reserve'])->get();
         if ($statusDay->isNotEmpty()) {
             $opened = true;
@@ -61,10 +62,7 @@ class CashFlowsController extends Controller
         }
         $types = ['input_stream' => 'Entrada', 'output_stream' => 'Saída'];
 
-        $reserve = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'reserve'])->sum('value');
-        $output = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'output_stream'])->sum('value');
-        $input = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'input_stream'])->sum('value');
-        $balance = $input + $reserve - $output;
+        $balance = $this->balanceOfDay();
 
         if (request()->wantsJson()) {
 
@@ -72,7 +70,7 @@ class CashFlowsController extends Controller
                 'data' => $cashFlows,
             ]);
         }
-        return view('cashflows.index', compact('cashFlows', 'types', 'opened', 'balance', 'input', 'output'));
+        return view('cashflows.index', compact('cashFlows', 'types', 'opened', 'actualDate', 'balance', 'input', 'output', 'date'));
     }
 
     /**
@@ -110,7 +108,7 @@ class CashFlowsController extends Controller
                 return response()->json($response);
             }
 
-            return redirect()->back()->with('message', $response['message']);
+            return redirect(route('cashflows.index'))->with('message', $response['message']);
         } catch (ValidatorException $e) {
             if ($request->wantsJson()) {
                 return response()->json([
@@ -154,8 +152,9 @@ class CashFlowsController extends Controller
     public function edit($id)
     {
         $cashFlow = $this->repository->find($id);
+        $types = ['input_stream' => 'Entrada', 'output_stream' => 'Saída'];
 
-        return view('cashflows.edit', compact('cashFlow'));
+        return view('cashflows.edit', compact('cashFlow','types'));
     }
 
     /**
@@ -177,7 +176,7 @@ class CashFlowsController extends Controller
             $cashFlow = $this->repository->update($request->all(), $id);
 
             $response = [
-                'message' => 'CashFlow updated.',
+                'message' => 'Fluxo editado.',
                 'data' => $cashFlow->toArray(),
             ];
 
@@ -228,9 +227,22 @@ class CashFlowsController extends Controller
     {
         $data = $request->all();
         $cashFlows = $this->repository->findWhere(['day' => $data['filter_date']]);
-        $opened = "hide";
+        $actualDate = $data['filter_date'];
+        if ($actualDate == Carbon::now(-3)->format('Y-m-d')) {
+            $statusDay = CashFlow::where(['day' => $actualDate, 'type' => 'reserve'])->get();
+            if ($statusDay->isNotEmpty()) {
+                $opened = true;
+            } else {
+                $opened = false;
+            }
+            $balance = $this->balanceOfDay();
+
+        } else {
+            $opened = "hide";
+            $balance = 0;
+        }
         $types = ['input_stream' => 'Entrada', 'output_stream' => 'Saída'];
-        return view('cashflows.index', compact('cashFlows', 'types', 'opened'));
+        return view('cashflows.index', compact('cashFlows', 'types', 'opened', 'balance', 'actualDate'));
     }
 
     public function closeDay()
@@ -245,13 +257,20 @@ class CashFlowsController extends Controller
         }
         $types = ['input_stream' => 'Entrada', 'output_stream' => 'Saída'];
 
+        $balance = $this->balanceOfDay();
+
+        $cashFlows = $this->repository->findWhere(['day' => Carbon::now(-3)->format('Y-m-d')]);
+
+        return view('cashflows.index', compact('cashFlows', 'types', 'opened', 'balance', 'input', 'output'));
+    }
+
+    public function balanceOfDay()
+    {
         $reserve = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'reserve'])->sum('value');
         $output = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'output_stream'])->sum('value');
         $input = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'input_stream'])->sum('value');
         $balance = $input + $reserve - $output;
-        $cashFlows = $this->repository->findWhere(['day' => Carbon::now(-3)->format('Y-m-d')]);
 
-        return view('cashflows.index', compact('cashFlows', 'types', 'opened', 'balance', 'input', 'output'));
-
+        return $balance;
     }
 }
