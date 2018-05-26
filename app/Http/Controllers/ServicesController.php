@@ -241,12 +241,12 @@ class ServicesController extends Controller
         if (request()->wantsJson()) {
 
             return response()->json([
-                'message' => 'Service deleted.',
+                'message' => 'Serviço deletado.',
                 'deleted' => $deleted,
             ]);
         }
 
-        return redirect()->back()->with('message', 'Service deleted.');
+        return redirect()->back()->with('message', 'Serviço deletado');
     }
 
     public function done(Request $request)

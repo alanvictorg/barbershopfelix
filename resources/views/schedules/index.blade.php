@@ -66,13 +66,21 @@
                                     <td>{!! $service->scheduled_hour !!}</td>
                                     <td>{!! $service->observation !!}</td>
                                     <td>
+                                        {!! Form::open(['url' => route('schedules.destroy', $service),'method' => 'delete','id' => 'form-destroy'.$service->id]) !!}
+
+                                        {!! Form::close() !!}
                                         <a href="{{ route('schedules.edit',$service)}}"
                                            class="btn btn-sm btn-warning"> <i class="fa fa-edit"
                                                                               aria-hidden="true"></i></a>
                                         <a href="{{ route('schedules.show',$service)}}"
                                            class="btn btn-sm btn-info"> <i class="fa fa-eye"
                                                                            aria-hidden="true"></i></a>
-                                    @if($service->status == "waiting")
+                                        <button type="submit"
+                                                class="btn btn-sm btn-danger btn-circle submit-destroy" value={{$service->id}}><i
+                                                    class="fa fa-close"></i>
+                                        </button>
+
+                                        @if($service->status == "waiting")
                                         <!-- <a href="{{ route('schedules.done',$service)}}"
                                                class="btn btn-sm btn-success pull-right"> <i class="fa fa-check"
                                                                                aria-hidden="true"></i></a>
@@ -120,6 +128,10 @@
 
             $("#filter").change('on', function () {
                 $('#form-filter').submit();
+            });
+
+            $(".submit-destroy").on('click', function () {
+                $('#form-destroy'+this.value).submit();
             });
 
             if (screen.width < 560) {
