@@ -34,6 +34,11 @@
                 calendarEl.classList.remove('col-md-10')
                 calendarEl.classList.remove('offset-md-1')
             }
+
+            if ($(window).width() > 372) {
+                document.getElementsByClassName('fc-right')[0].style = null
+            }
+
             if ($(window).width() <= 972) {
                 document.getElementById("chart").style = "margin-top: 30px;"
             }
