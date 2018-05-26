@@ -42,7 +42,11 @@
                                         <h5 class="widget-user-desc"></h5>
                                     </div>
                                     <div class="widget-user-image">
-                                        <img class="img-circle" src="{{asset($client->imagepath)}}" alt="User Avatar">
+                                        @if($client->imagepath)
+                                            <img class="img-circle" src="{{asset($client->imagepath)}}" alt="User Avatar">
+                                        @else
+                                            <img src="{{asset('img/avatar.png')}}" class="img-circle" alt="User Image">
+                                        @endif
                                     </div>
                                     <div class="box-footer">
                                         <div class="row">
