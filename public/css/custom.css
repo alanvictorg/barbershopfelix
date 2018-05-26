@@ -227,7 +227,7 @@
     font-size: 27px;
 }
 .widget-user .widget-user-header {
-    background: linear-gradient(black 60%, ghostwhite) !important;
+    background-color: black !important;
 }
 
 .day {

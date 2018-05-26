@@ -48,46 +48,46 @@
                                         <div class="row">
                                             <div class="col-sm-4 border-right">
                                                 <div class="description-block">
-                                                    <h5 class="description-header">{!! $client->phone !!}</h5>
-                                                    <span class="description-text">TELEFONE</span>
+                                                    <h5 class="description-header">TELEFONE</h5>
+                                                    <span class="description-text">{!! $client->phone !!}</span>
                                                 </div>
                                                 <!-- /.description-block -->
                                             </div>
                                             <!-- /.col -->
                                             <div class="col-sm-4 border-right">
                                                 <div class="description-block">
-                                                    <h5 class="description-header">{!! $client->email !!}</h5>
-                                                    <span class="description-text">EMAIL</span>
+                                                    <h5 class="description-header">EMAIL</h5>
+                                                    <span class="description-text">{!! $client->email !!}</span>
                                                 </div>
                                                 <!-- /.description-block -->
                                             </div>
                                             <!-- /.col -->
                                             <div class="col-sm-4">
                                                 <div class="description-block">
-                                                    <h5 class="description-header">{!! $client->birthday !!}</h5>
-                                                    <span class="description-text">NASCIMENTO</span>
+                                                    <h5 class="description-header">NASCIMENTO</h5>
+                                                    <span class="description-text">{!! $client->birthday !!}</span>
                                                 </div>
                                                 <!-- /.description-block -->
                                             </div>
                                             <div class="col-sm-4 border-right">
                                                 <div class="description-block">
-                                                    <h5 class="description-header">{!! \Carbon\Carbon::parse($client->created_at)->format('d-m-Y')  !!}</h5>
-                                                    <span class="description-text">CLIENTE DESDE</span>
+                                                    <h5 class="description-header">CLIENTE DESDE</h5>
+                                                    <span class="description-text">{!! \Carbon\Carbon::parse($client->created_at)->format('d-m-Y')  !!}</span>
                                                 </div>
                                                 <!-- /.description-block -->
                                             </div>
                                             <!-- /.col -->
                                             <div class="col-sm-4">
                                                 <div class="description-block">
-                                                    <h5 class="description-header">{!! $amountGone !!}</h5>
-                                                    <span class="description-text">IDAS AO BARBEIRO</span>
+                                                    <h5 class="description-header">IDAS AO BARBEIRO</h5>
+                                                    <span class="description-text">{!! $amountGone !!}</span>
                                                 </div>
                                                 <!-- /.description-block -->
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="description-block">
-                                                    <h5 class="description-header">{!! $quantityServices !!}</h5>
-                                                    <span class="description-text">QUANTIDADE DE SERVIÇOS</span>
+                                                    <h5 class="description-header">QUANTIDADE DE SERVIÇOS</h5>
+                                                    <span class="description-text">{!! $quantityServices !!}</span>
                                                 </div>
                                                 <!-- /.description-block -->
                                             </div>
