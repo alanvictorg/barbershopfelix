@@ -129,8 +129,7 @@
                 document.getElementById('fechar-caixa').style.marginTop = "5px"
             }
 
-            var filter = $("#filter");
-            filter.on('change', function () {
+            $("#filter").change('on', function () {
                 $('#form-filter').submit();
             });
 

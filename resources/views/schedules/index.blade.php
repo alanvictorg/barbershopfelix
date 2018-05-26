@@ -77,7 +77,7 @@
                                                class="btn btn-sm btn-success pull-right"> <i class="fa fa-check"
                                                                                aria-hidden="true"></i></a>
                                             <strong class="pull-right" style="margin: 5px 15px 0 0">Marcar como concluído</strong> !-->
-                                            <a href="#" data-toggle="modal" data-target="#createmodaldone"
+                                            <a href="#" id="done" data-toggle="modal" data-target="#createmodaldone"
                                                class="btn btn-black btn-sm rounded-s pull-right"><i
                                                         class="fa fa-check"></i></a>
                                             @include("schedules._done")
@@ -121,6 +121,11 @@
             $("#filter").change('on', function () {
                 $('#form-filter').submit();
             });
+
+            if (screen.width < 560) {
+                var doneElement = document.getElementById('done')
+                doneElement.classList.remove('pull-right')
+            }
 
             $("#select-day").click(function () {
                 document.getElementById("scheduled_day").disabled = false;
