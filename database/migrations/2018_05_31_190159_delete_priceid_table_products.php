@@ -14,6 +14,7 @@ class DeletePriceidTableProducts extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
+            $table->dropForeign('products_price_id_foreign');
             $table->integer('price_id')->nullable()->change();
         });
     }
