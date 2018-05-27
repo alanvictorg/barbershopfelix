@@ -247,7 +247,7 @@ class ServicesController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('message', 'Serviço deletado');
+        return redirect(route('schedules.index'))->with('message', 'Serviço deletado');
     }
 
     public function done(Request $request)
