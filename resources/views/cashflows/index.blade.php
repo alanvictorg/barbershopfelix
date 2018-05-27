@@ -24,10 +24,7 @@
 @section('main-content')
     <section class="content">
         <div class="row">
-            @if(isset($date))
-                <div class="col-md-4 day" id="dia">Dia: {!! \Carbon\Carbon::now(-3)->format('d/m/Y') !!}</div>
-            @endif
-            <div class="pull-right" id="data-form">
+            <div class="pull-right">
                 {!! Form::open(['url'=>route('cashflows.filterByDate'),
                                 'enctype'=> 'multipart/form-data',
                                 'file'=>'true',
@@ -35,8 +32,8 @@
                 {!! Form::date('filter_date',null,['id'=>'filter', 'class' => 'form-control']) !!}
                 {!! Form::close() !!}
             </div>
-            <div class="pull-right" id="selecionar-form" style="margin: 0 10px 30px 0">
-                {!! Form::label('filter_date','Selecionar dia ') !!}
+            <div class="pull-right" style="margin: 0 10px 30px 0">
+                {!! Form::label('filter_date','Selecionar dia: ') !!}
             </div>
             <div class="col-xs-12">
                 <div class="box">
@@ -118,20 +115,24 @@
 @endsection
 
 @section('scriptpage')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css"
+          rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
     <script>
         $(document).ready(function () {
+
+            $("#filter").change("on", function () {
+                $("#form-filter").submit();
+                console.log('filtro')
+            });
+
             if ($(window).width() <= 380) {
-                document.getElementById('data-form').classList.remove('pull-right')
-                document.getElementById('selecionar-form').classList.remove('pull-right')
-                document.getElementById('selecionar-form').style = "text-align:center"
-                document.getElementById('dia').style = "text-align:center"
-                document.getElementById('abrir-caixa').style.marginTop = "5px"
-                document.getElementById('fechar-caixa').style.marginTop = "5px"
+                document.getElementById('abrir-caixa').style.marginTop = "5px";
+                document.getElementById('fechar-caixa').style.marginTop = "5px";
             }
 
-            $("#filter").change('on', function () {
-                $('#form-filter').submit();
-            });
+
 
             var description = $("#description");
 
