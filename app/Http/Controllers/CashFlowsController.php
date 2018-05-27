@@ -226,7 +226,7 @@ class CashFlowsController extends Controller
     public function filterByDate(Request $request)
     {
         $data = $request->all();
-        $cashFlows = $this->repository->findWhere(['day' => $data['filter_date']]);
+        $cashFlows = CashFlow::where('day', $data['filter_date'])->get();
         $actualDate = $data['filter_date'];
         if ($actualDate == Carbon::now(-3)->format('Y-m-d')) {
             $statusDay = CashFlow::where(['day' => $actualDate, 'type' => 'reserve'])->get();
@@ -249,6 +249,7 @@ class CashFlowsController extends Controller
     {
         $cashflows = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d')])->delete();
         $statusDay = CashFlow::where(['day' => Carbon::now(-3)->format('Y-m-d'), 'type' => 'reserve'])->get();
+        $actualDate = Carbon::now(-3)->format('Y-m-d');
 
         if ($statusDay->isNotEmpty()) {
             $opened = true;
@@ -261,7 +262,7 @@ class CashFlowsController extends Controller
 
         $cashFlows = $this->repository->findWhere(['day' => Carbon::now(-3)->format('Y-m-d')]);
 
-        return view('cashflows.index', compact('cashFlows', 'types', 'opened', 'balance', 'input', 'output'));
+        return view('cashflows.index', compact('cashFlows', 'types', 'opened', 'balance', 'input', 'output','actualDate'));
     }
 
     public function balanceOfDay()
