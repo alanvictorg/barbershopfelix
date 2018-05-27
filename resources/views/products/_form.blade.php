@@ -14,10 +14,10 @@
     </div>
 </div>
 <div class="col-md-6">
-    <div class="form-group{{ $errors->has("price_id") ? ' has-error' : '' }}">
-        {!! Form::label("price_id", 'Preço', ['class' => '']) !!}
-        {!! Form::select("price_id", $prices, null, ["class" => "form-control", 'id'=>'price_id','required','placeholder'=>"Escolha um preço",'required'])  !!}
-        <small class="text-danger">{{ $errors->first("price_id") }}</small>
+    <div class="form-group{{ $errors->has("price") ? ' has-error' : '' }}">
+        {!! Form::label("price", 'Preço', ['class' => '']) !!}
+        {!! Form::text("price", null, ["class" => "form-control", 'id'=>'price','required','placeholder'=>"Escolha um preço",'required'])  !!}
+        <small class="text-danger">{{ $errors->first("price") }}</small>
     </div>
 </div>
 

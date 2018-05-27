@@ -154,7 +154,7 @@ class ServicesController extends Controller
         $serviceItems = $service->items;
         $valorTotal = 0;
         foreach ($serviceItems as $servicei) {
-            $valorTotal += $servicei->product->price->price;
+            $valorTotal += $servicei->product->price;
             if ($servicei->discount) {
                 $valorTotal -= $servicei->discount;
             }
@@ -264,7 +264,7 @@ class ServicesController extends Controller
         $valorService = 0;
 
         foreach ($service->items as $key => $item) {
-            $valorService += $item->product->price->price;
+            $valorService += $item->product->price;
             $namesServices = $namesServices . "," . $item->product->name;
             if ($item->discount) {
                 $valorService -= $item->discount;

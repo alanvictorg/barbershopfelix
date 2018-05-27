@@ -22,11 +22,12 @@ class Product extends Model implements Transformable
      */
     protected $fillable = [
         'price_id',
+        'price',
         'name',
         'description'
     ];
 
-    public function price()
+    public function priceP()
     {
         return $this->belongsTo(Price::class);
     }

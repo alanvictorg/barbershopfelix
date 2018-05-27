@@ -86,7 +86,7 @@
                                         <td class="btn-danger">Saída</td>
                                     @endif
 
-                                    <td>R${!! $item->value !!},00</td>
+                                    <td>R${!! $item->value !!}</td>
                                     <td>{!! $item->description !!}</td>
                                     <td>
                                         <a href="{{ route('cashflows.edit',$item)}}"
