@@ -54,7 +54,7 @@
                                     <td>R${!! $product->price->price !!},00</td>
                                     <td>
                                         <a href="{{ route('products.edit',$product)}}"
-                                           class="btn btn-sm btn-warning"> <i class="fa fa-edit"
+                                           class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Editar"> <i class="fa fa-edit"
                                                                               aria-hidden="true"></i></a>
 
                                     </td>

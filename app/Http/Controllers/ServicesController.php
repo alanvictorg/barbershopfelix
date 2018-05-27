@@ -236,6 +236,7 @@ class ServicesController extends Controller
      */
     public function destroy($id)
     {
+        EventModel::destroy($id);
         $deleted = $this->repository->delete($id);
 
         if (request()->wantsJson()) {

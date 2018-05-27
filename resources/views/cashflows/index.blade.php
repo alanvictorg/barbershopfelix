@@ -27,7 +27,7 @@
             @if(isset($date))
                 <div class="col-md-4 day" id="dia">Dia: {!! \Carbon\Carbon::now(-3)->format('d/m/Y') !!}</div>
             @endif
-            <div class="col-md-3 pull-right" id="data-form">
+            <div class="pull-right" id="data-form">
                 {!! Form::open(['url'=>route('cashflows.filterByDate'),
                                 'enctype'=> 'multipart/form-data',
                                 'file'=>'true',

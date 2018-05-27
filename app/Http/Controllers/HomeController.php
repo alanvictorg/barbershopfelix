@@ -48,7 +48,8 @@ class HomeController extends Controller
         $paymentCredit = (CashFlow::withTrashed()->where(['payment_id' => 2])->count() / $totalPayments) * 100;
 
         $events = [];
-        $eloquentModel = EventModel::all();
+
+        $eloquentModel = EventModel::where('end','>=', Carbon::now(-3)->subDay(1)->toDateTimeString())->get();
         $calendar = Calendar::addEvents($eloquentModel);
 
         $chartPayments = app()->chartjs

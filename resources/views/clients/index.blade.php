@@ -54,10 +54,10 @@
                                     <td>{!! $client->phone !!}</td>
                                     <td>
                                         <a href="{{ route('clients.edit',$client)}}"
-                                           class="btn btn-sm btn-warning"> <i class="fa fa-edit"
+                                           class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Editar"> <i class="fa fa-edit"
                                                                                             aria-hidden="true"></i></a>
                                         <a class='btn btn-sm btn-info btn-danger-outline'
-                                           href="{{route('clients.show',[$client])}}"><i class="fa fa-eye"
+                                           href="{{route('clients.show',[$client])}}" data-toggle="tooltip" data-placement="top" title="Visualizar perfil"><i class="fa fa-eye"
                                                                                          aria-hidden="true"></i></a>
                                     </td>
                                 </tr>

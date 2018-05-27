@@ -70,12 +70,12 @@
 
                                         {!! Form::close() !!}
                                         <a href="{{ route('schedules.edit',$service)}}"
-                                           class="btn btn-sm btn-warning"> <i class="fa fa-edit"
+                                           class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Editar"> <i class="fa fa-edit"
                                                                               aria-hidden="true"></i></a>
                                         <a href="{{ route('schedules.show',$service)}}"
-                                           class="btn btn-sm btn-info"> <i class="fa fa-eye"
+                                           class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Visualizar serviços"> <i class="fa fa-eye"
                                                                            aria-hidden="true"></i></a>
-                                        <button type="submit"
+                                        <button type="submit" data-toggle="tooltip" data-placement="top" title="Apagar"
                                                 class="btn btn-sm btn-danger btn-circle submit-destroy" value={{$service->id}}><i
                                                     class="fa fa-close"></i>
                                         </button>
@@ -85,7 +85,7 @@
                                                class="btn btn-sm btn-success pull-right"> <i class="fa fa-check"
                                                                                aria-hidden="true"></i></a>
                                             <strong class="pull-right" style="margin: 5px 15px 0 0">Marcar como concluído</strong> !-->
-                                            <a href="#" id="done" data-toggle="modal" data-target="#createmodaldone"
+                                            <a href="#" id="done" data-toggle="modal" data-target="#createmodaldone" data-toggle="tooltip" data-placement="top" title="Marcar como feito"
                                                class="btn btn-black btn-sm rounded-s pull-right"><i
                                                         class="fa fa-check"></i></a>
                                             @include("schedules._done")
