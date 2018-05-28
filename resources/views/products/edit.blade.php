@@ -63,5 +63,12 @@
     <link href="{{ asset('plugins/select2/select2.min.css') }}" rel="stylesheet" type="text/css"/>
     <script src="{{ asset('plugins/select2/select2.full.min.js') }}"></script>
     <script src="{{ asset('plugins/select2/i18n/pt-BR.js') }}"></script>
-
+    <script>
+        $(document).ready(function () {
+            $('#price').keyup(function () {
+                var val = $(this).val().replace(',', '.');
+                $(this).val(val);
+            });
+        })
+    </script>
 @endsection

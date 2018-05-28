@@ -54,8 +54,9 @@
                                     <td>R${!! $product->price !!}</td>
                                     <td>
                                         <a href="{{ route('products.edit',$product)}}"
-                                           class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Editar"> <i class="fa fa-edit"
-                                                                              aria-hidden="true"></i></a>
+                                           class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top"
+                                           title="Editar"> <i class="fa fa-edit"
+                                                              aria-hidden="true"></i></a>
 
                                     </td>
                                 </tr>
@@ -88,22 +89,11 @@
           rel="stylesheet"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
     <script>
-        $.fn.select2.defaults.set("theme", "bootstrap");
-        $.fn.select2.defaults.set('language', 'pt-BR');
         $(document).ready(function () {
-            $('#service_id').select2({
-                placeholder: 'Seleciona um serviço',
-                width: '100%'
+            $('#price').keyup(function () {
+                var val = $(this).val().replace(',', '.');
+                $(this).val(val);
             });
-            $('#client_id').select2({
-                placeholder: 'Seleciona um serviço',
-                width: '100%'
-            });
-            $('#form_of_payment_id').select2({
-                placeholder: 'Seleciona uma Forma de Pagamento',
-                width: '100%'
-            });
-            console.log('oi');
         })
     </script>
 @endsection

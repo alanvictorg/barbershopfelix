@@ -151,6 +151,20 @@
                     document.getElementById("day").disabled = false;
                 }
             })
+
+            $(document).ready(function () {
+                $('#value').keyup(function () {
+                    var val = $(this).val().replace(',', '.');
+                    $(this).val(val);
+                });
+            })
+
+            $(document).ready(function () {
+                $('#openVal').keyup(function () {
+                    var val = $(this).val().replace(',', '.');
+                    $(this).val(val);
+                });
+            })
         })
     </script>
 @endsection
